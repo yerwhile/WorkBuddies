@@ -131,13 +131,13 @@ namespace WorkBuddies.Repositories
                                 Email = DbUtils.GetString(reader, "Email"),
                                 City = DbUtils.GetString(reader, "City"),
                                 State = DbUtils.GetString(reader, "State"),
-                                Image = DbUtils.GetString(reader, "Image"),
-                                About = DbUtils.GetString(reader, "About"),
-                                Gender = DbUtils.GetString(reader, "Gender"),
-                                Age = DbUtils.GetInt(reader, "Age"),
-                                CompanyName = DbUtils.GetString(reader, "CompanyName"),
-                                CompanyIndustry = DbUtils.GetString(reader, "CompanyIndustry"),
-                                CompanyRole = DbUtils.GetString(reader, "CompanyRole")
+                                Image = DbUtils.GetNullableString(reader, "Image"),
+                                About = DbUtils.GetNullableString(reader, "About"),
+                                Gender = DbUtils.GetNullableString(reader, "Gender"),
+                                Age = DbUtils.GetNullableInt(reader, "Age"),
+                                CompanyName = DbUtils.GetNullableString(reader, "CompanyName"),
+                                CompanyIndustry = DbUtils.GetNullableString(reader, "CompanyIndustry"),
+                                CompanyRole = DbUtils.GetNullableString(reader, "CompanyRole")
                             });
                         }
                         return buddies;
@@ -209,6 +209,7 @@ namespace WorkBuddies.Repositories
                     DbUtils.AddParameter(cmd, "@companyName", buddy.CompanyName);
                     DbUtils.AddParameter(cmd, "@companyIndustry", buddy.CompanyIndustry);
                     DbUtils.AddParameter(cmd, "@companyRole", buddy.CompanyRole);
+                    DbUtils.AddParameter(cmd, "@id", buddy.Id);
 
                     cmd.ExecuteNonQuery();
                 }
