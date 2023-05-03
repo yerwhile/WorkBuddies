@@ -8,6 +8,8 @@ namespace WorkBuddies.Models
 
         [Required]
         public string FirstName { get; set; }
+
+        [Required]
         public string LastName { get; set; }
 
         [Required]
@@ -18,13 +20,13 @@ namespace WorkBuddies.Models
 
         [Required]
         public string State { get; set; }
-        public string Image { get; set; }
-        public string About { get; set; }
-        public string Gender { get; set; }
-        public int Age { get; set; }
-        public string CompanyName { get; set; }
-        public string CompanyIndustry { get; set; }
-        public string CompanyRole { get; set; }
+        public string? Image { get; set; }
+        public string? About { get; set; }
+        public string? Gender { get; set; }
+        public int? Age { get; set; }
+        public string? CompanyName { get; set; }
+        public string? CompanyIndustry { get; set; }
+        public string? CompanyRole { get; set; }
 
         [Required]
         public string FirebaseUserId { get; set; }
