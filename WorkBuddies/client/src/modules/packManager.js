@@ -41,6 +41,25 @@ export const getPackDetails = (id) => {
     });
   }
 
+  export const getPacksByHangout = (hangoutId) => {
+    return getToken().then((token) => {
+        return fetch(`${_apiUrl}/packsByHangout/${hangoutId}`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }).then((resp) => {
+            if(resp.ok) {
+                return resp.json();
+            } else {
+                throw new Error(
+                    "An unknown error occurred while trying to get packs.",
+                );
+            }
+        });
+    });
+}
+
   export const addPack = (pack) => {
     return getToken().then((token) => {
       return fetch(_apiUrl, {
