@@ -11,7 +11,7 @@ import {
 } from 'reactstrap';
 import { logout } from '../modules/authManager';
 
-export default function Header({ isLoggedIn }) {
+export default function Header({ isLoggedIn, user }) {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
 

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getAllPacks, getPacksByCity, getPacksByCompany, getPacksByHangout} from "../../modules/packManager";
-import { getAllHangouts } from "../../modules/hangoutManager";
-import { getAllBuddies } from "../../modules/buddyManager";
+import { getPacksByCity, getPacksByCompany, getPacksByHangout, getPacksByState} from "../../modules/packManager";
+import { getHangoutsByState } from "../../modules/hangoutManager";
+import { getBuddiesByState } from "../../modules/buddyManager";
 
 const FindPack = () => {
     const [packs, setPacks] = useState([]);
@@ -16,11 +16,12 @@ const FindPack = () => {
     const [cityChoice, setCityChoice] = useState("");
     const [hangoutChoice, setHangoutChoice] = useState("");
     const [companyChoice, setCompanyChoice] = useState("");
+    const [filteredPacks, setFilteredPacks] = useState([]);
 
     useEffect(() => {
-        getAllPacks().then(setPacks);
-        getAllBuddies().then(setBuddies);
-        getAllHangouts().then(setHangouts);
+        getPacksByState().then(setPacks);
+        getHangoutsByState().then(setHangouts);
+        getBuddiesByState().then(setBuddies);
     }, [])
 
     useEffect(() => {
@@ -49,15 +50,30 @@ const FindPack = () => {
         getPacksByCompany(companyChoice).then(setCompanyPacks)
     }, [companyChoice])
 
+    useEffect(() => {
+        setFilteredPacks(companyPacks)
+
+    }, [companyPacks])
+
+    useEffect(() => {
+        setFilteredPacks(cityPacks)
+    }, [cityPacks])
+  
+    useEffect(() => {
+        setFilteredPacks(hangoutPacks)
+    }, [hangoutPacks])
+
     return (
         <>
         <div className="findPack_selectFilters">
-            <label htmlFor="cities">Filter by Cities:</label>
+            <label htmlFor="cities">Filter by Buddy Cities:</label>
             <select name="cities"
                     id="cities" 
                     value={cityChoice}
                     onChange={(event) => {
                         setCityChoice(event.target.value)
+                        setHangoutChoice("")
+                        setCompanyChoice("")
                     }}>
                     <option value="">Choose a City</option>
                 {
@@ -66,12 +82,14 @@ const FindPack = () => {
                     })
                 }
             </select>
-            <label htmlFor="hangouts">Filter by Hangouts:</label>
+            <label htmlFor="hangouts">Filter by Pack Hangouts:</label>
             <select name="hangouts" 
                     id="hangouts" 
                     value={hangoutChoice} 
                     onChange={(event) => {
                         setHangoutChoice(event.target.value)
+                        setCityChoice("")
+                        setCompanyChoice("")
                     }}>
                     <option value="">Choose a Hangout</option>
                 {
@@ -80,12 +98,14 @@ const FindPack = () => {
                     })
                 }
             </select>
-            <label htmlFor="companies">Filter by Companies:</label>
+            <label htmlFor="companies">Filter by Buddy Companies:</label>
             <select name="companies"
                     id="companies" 
                     value={companyChoice}
                     onChange={(event) => {
                         setCompanyChoice(event.target.value)
+                        setCityChoice("")
+                        setHangoutChoice("")
                     }}>
                     <option value="">Choose a Company</option>
                 {
@@ -97,19 +117,25 @@ const FindPack = () => {
         </div>
         <div className="findPack_filterResults">
             <table>
-                <tr>
-                    <th>Name</th>
-                    <th>Location</th>
-                    <th>Buddy Count</th>
-                    <th>Join/Leave?</th>
-                </tr>
-                {pack?.buddies?.map((buddy) => {
-                return <tr>
-                    <td>{buddy.firstName} {buddy.lastName}</td>
-                    <td>{buddy.city}, {buddy.state}</td>
-                    <td>{buddy.companyName}</td>
-                </tr>
-            })}
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Form Date</th>
+                        <th>Buddy Count</th>
+                        <th>Join/Leave?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {filteredPacks?.map((pack) => {
+                    return <tr>
+                        <td>{pack.name}</td>
+                        <td>{pack.createDate}</td>
+                        <td>Buddy Count</td>
+                        <td>Join/Leave?</td>
+                    </tr>
+                    
+                    })}
+                </tbody>
             </table>
         </div>
         </>

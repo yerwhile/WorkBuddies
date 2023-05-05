@@ -22,7 +22,7 @@ export default function FormPack() {
         image
     }
 
-    addPack(pack).then((packData) => {navigate(`/packDetails/${packData.id}`)})
+    addPack(pack).then((packData) => {navigate(`/pack/packDetails/${packData.id}`)})
   };
 
   return (

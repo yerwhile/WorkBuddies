@@ -1,26 +1,36 @@
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router } from "react-router-dom";
+import './App.css';
+import Header from './components/Header';
+import { BrowserRouter } from 'react-router-dom';
+import ApplicationViews from './components/ApplicationViews';
+import { useEffect, useState } from 'react';
+import { me, onLoginStatusChange } from './modules/authManager';
 import { Spinner } from 'reactstrap';
-import Header from "./components/Header";
-import ApplicationViews from "./components/ApplicationViews";
-import { onLoginStatusChange } from "./modules/authManager";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(null)
+  const [isLoggedIn, setIsLoggedIn] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     onLoginStatusChange(setIsLoggedIn);
   }, []);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      me().then(setUser);
+    } else {
+      setUser(null);
+    }
+  }, [isLoggedIn]);
 
   if (isLoggedIn === null) {
     return <Spinner className="app-spinner dark" />;
   }
 
   return (
-    <Router>
-      <Header isLoggedIn={isLoggedIn} />
-      <ApplicationViews isLoggedIn={isLoggedIn} />
-    </Router>
+    <BrowserRouter>
+      <Header isLoggedIn={isLoggedIn} user={user} />
+      <ApplicationViews isLoggedIn={isLoggedIn} user={user} />
+    </BrowserRouter>
   );
 }
 

@@ -8,6 +8,7 @@ namespace WorkBuddies.Repositories
         void Add(Buddy buddy);
         Buddy GetByFirebaseUserId(string firebaseUserId);
         List<Buddy> GetBuddies();
+        List<Buddy> GetBuddiesByState(string state);
         Buddy GetById(int id);
         void Update(Buddy buddy);
     }
