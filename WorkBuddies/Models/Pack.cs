@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace WorkBuddies.Models
@@ -18,5 +19,9 @@ namespace WorkBuddies.Models
         public DateTime CreateDate { get; set; }
         [Required]
         public bool IsOpen { get; set; }
+
+        public List<Vibe> Vibes { get; set; }
+        public List<Hangout> Hangouts { get; set; }
+        public List<Buddy> Buddies { get; set; }
     }
 }

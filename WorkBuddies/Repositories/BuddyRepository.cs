@@ -146,6 +146,7 @@ namespace WorkBuddies.Repositories
             }
         }
 
+
         public void Add(Buddy buddy)
         {
             using (var conn = Connection)
