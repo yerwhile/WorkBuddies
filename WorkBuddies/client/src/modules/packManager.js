@@ -41,6 +41,62 @@ export const getPackDetails = (id) => {
     });
   }
 
+  export const getPacksByHangout = (hangout) => {
+    return getToken().then((token) => {
+        return fetch(`${_apiUrl}/searchByHangout?q=${hangout}`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }).then((resp) => {
+            if(resp.ok) {
+                return resp.json();
+            } else {
+                throw new Error(
+                    "An unknown error occurred while trying to get packs.",
+                );
+            }
+        });
+    });
+}
+  export const getPacksByCity = (city) => {
+    return getToken().then((token) => {
+        return fetch(`${_apiUrl}/searchByCity?q=${city}`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }).then((resp) => {
+            if(resp.ok) {
+                return resp.json();
+            } else {
+                throw new Error(
+                    "An unknown error occurred while trying to get packs.",
+                );
+            }
+        });
+    });
+}
+  
+export const getPacksByCompany = (company) => {
+    return getToken().then((token) => {
+        return fetch(`${_apiUrl}/searchByCompany?q=${company}`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }).then((resp) => {
+            if(resp.ok) {
+                return resp.json();
+            } else {
+                throw new Error(
+                    "An unknown error occurred while trying to get packs.",
+                );
+            }
+        });
+    });
+}
+
   export const addPack = (pack) => {
     return getToken().then((token) => {
       return fetch(_apiUrl, {

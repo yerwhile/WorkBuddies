@@ -39,6 +39,24 @@ namespace WorkBuddies.Controllers
 
         }
 
+        [HttpGet("searchByHangout")]
+        public IActionResult GetPacksByHangout(string q)
+        {
+            return Ok(_packRepository.GetPacksByHangout(q));
+        }
+
+        [HttpGet("searchByCity")]
+        public IActionResult GetPacksByCity(string q)
+        {
+            return Ok(_packRepository.GetPacksByCity(q));
+        }
+
+        [HttpGet("searchByCompany")]
+        public IActionResult GetPacksByCompany(string q)
+        {
+            return Ok(_packRepository.GetPacksByCompany(q));
+        }
+
         [HttpPost]
         public IActionResult Post(Pack pack)
         {
