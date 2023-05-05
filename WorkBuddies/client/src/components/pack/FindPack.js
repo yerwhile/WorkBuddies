@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getAllPacks} from "../../modules/packManager";
+import { getAllPacks, getPacksByCity, getPacksByCompany, getPacksByHangout} from "../../modules/packManager";
 import { getAllHangouts } from "../../modules/hangoutManager";
 import { getAllBuddies } from "../../modules/buddyManager";
 
@@ -19,54 +19,98 @@ const FindPack = () => {
 
     useEffect(() => {
         getAllPacks().then(setPacks);
+        getAllBuddies().then(setBuddies);
+        getAllHangouts().then(setHangouts);
     }, [])
 
     useEffect(() => {
-        getAllBuddies()
-            .then((buddiesArr) => {
-                const buddiesCompanies = buddiesArr.filter(b => b.companyName);
-                const uniqueCompanies = [...new Set(buddiesCompanies)];
-                setCompanies(uniqueCompanies);
+        const buddyCities = buddies.map(buddy => buddy.city);
+        const uniqueCities = buddyCities.filter((city, index) => {
+            return buddyCities.indexOf(city) === index;
+        })
+        setCities(uniqueCities);
 
-                const buddiesCities = buddiesArr.filter(b => b.City);
-                const uniqueCities = [...new Set(buddiesCities)];
-                setCities(uniqueCities);
-            })
-        
-        getAllHangouts()
-            .then((hangoutArr) => {
-                setHangouts(hangoutArr.filter(h => h.name));
-            })
+        const  buddyCompanies = buddies.map(buddy => buddy.companyName);
+        const uniqueCompanies = buddyCompanies.filter((company, index) => {
+            return buddyCompanies.indexOf(company) === index;
+        })
+        setCompanies(uniqueCompanies);
+    }, [buddies])
 
-    }, [packs])
+    useEffect(() => {
+        getPacksByCity(cityChoice).then(setCityPacks)
+    }, [cityChoice])
+
+    useEffect(() => {
+        getPacksByHangout(hangoutChoice.id).then(setHangoutPacks)
+    }, [hangoutChoice])
+
+    useEffect(() => {
+        getPacksByCompany(companyChoice).then(setCompanyPacks)
+    }, [companyChoice])
 
     return (
         <>
         <div className="findPack_selectFilters">
-            <label for="cities">Filter by Cities:</label>
-            <select name="cities" id="cities">
+            <label htmlFor="cities">Filter by Cities:</label>
+            <select name="cities"
+                    id="cities" 
+                    value={cityChoice}
+                    onChange={(event) => {
+                        setCityChoice(event.target.value)
+                    }}>
+                    <option value="">Choose a City</option>
                 {
-                    cities?.map((city) => {
-                        return <option value={city}>{city}</option>
+                    cities?.map((city, index) => {
+                        return <option key={index + 1} value={city}>{city}</option>
                     })
                 }
             </select>
-            <label for="hangouts">Filter by Hangouts:</label>
-            <select name="hangouts" id="hangouts">
+            <label htmlFor="hangouts">Filter by Hangouts:</label>
+            <select name="hangouts" 
+                    id="hangouts" 
+                    value={hangoutChoice} 
+                    onChange={(event) => {
+                        setHangoutChoice(event.target.value)
+                    }}>
+                    <option value="">Choose a Hangout</option>
                 {
                     hangouts?.map((hangout) => {
-                        return <option value={hangout}>{hangout}</option>
+                        return <option key={hangout.id} value={hangout.name}>{hangout.name}</option>
                     })
                 }
             </select>
-            <label for="companies">Filter by Companies:</label>
-            <select name="companies" id="companies">
+            <label htmlFor="companies">Filter by Companies:</label>
+            <select name="companies"
+                    id="companies" 
+                    value={companyChoice}
+                    onChange={(event) => {
+                        setCompanyChoice(event.target.value)
+                    }}>
+                    <option value="">Choose a Company</option>
                 {
-                    companies?.map((company) => {
-                        return <option value={company}>{company}</option>
+                    companies?.map((company, index) => {
+                        return <option key={index + 1} value={company}>{company}</option>
                     })
                 }
             </select>
+        </div>
+        <div className="findPack_filterResults">
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Location</th>
+                    <th>Buddy Count</th>
+                    <th>Join/Leave?</th>
+                </tr>
+                {pack?.buddies?.map((buddy) => {
+                return <tr>
+                    <td>{buddy.firstName} {buddy.lastName}</td>
+                    <td>{buddy.city}, {buddy.state}</td>
+                    <td>{buddy.companyName}</td>
+                </tr>
+            })}
+            </table>
         </div>
         </>
     )
