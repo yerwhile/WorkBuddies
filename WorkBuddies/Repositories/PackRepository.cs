@@ -166,7 +166,8 @@ namespace WorkBuddies.Repositories
                 {
                     cmd.CommandText = @"
                         SELECT p.Id, p.[Name], p.[Description], p.Schedule, p.[Image], p.CreateDate, p.IsOpen,
-                                b.[State]
+                                b.[State],
+                                bp.Id AS BuddyPackId
                                 FROM Pack p
                             LEFT JOIN BuddyPack bp ON bp.PackId = p.Id
                             LEFT JOIN Buddy b ON b.Id = bp.BuddyId
@@ -179,6 +180,7 @@ namespace WorkBuddies.Repositories
                         var packs = new List<Pack>();
                         while (reader.Read())
                         {
+
                             var packId = reader.GetInt32(reader.GetOrdinal("Id"));
                             var existingPack = packs.FirstOrDefault(p => p.Id == packId) ?? new Pack()
                             {
@@ -200,6 +202,7 @@ namespace WorkBuddies.Repositories
                 }
             }
         }
+
 
         public List<Pack> GetPacksByHangout(string hangout)
         {
@@ -335,6 +338,38 @@ namespace WorkBuddies.Repositories
                 }
             }
         }
+
+        public int GetBuddyCountByPack (int packId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd  = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT bp.Id
+                                            FROM BuddyPack bp
+                                                LEFT JOIN Pack p ON p.Id = bp.PackId
+                                            WHERE bp.PackId = @packId";
+
+                    DbUtils.AddParameter(cmd, "@packId", packId);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        var buddyPacks = new List<BuddyPack>();
+                        while (reader.Read())
+                        {
+                            var buddyPack = new BuddyPack()
+                            {
+                                Id = DbUtils.GetInt(reader, "Id"),
+                            };
+                            buddyPacks.Add(buddyPack);
+                        }
+                        return buddyPacks.Count;
+                    }
+                }
+            }
+        }
+
 
         public void Add(Pack pack)
         {

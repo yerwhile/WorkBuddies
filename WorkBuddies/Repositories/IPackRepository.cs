@@ -13,5 +13,6 @@ namespace WorkBuddies.Repositories
         List<Pack> GetPacksByCompany(string company);
         Pack GetPackById(int id);
         void Update(Pack pack);
+        int GetBuddyCountByPack(int packId);
     }
 }

@@ -60,6 +60,26 @@ export const getPackDetails = (id) => {
     });
   }
 
+  export const getBuddyCount = (packId) => {
+  
+    return getToken().then(token => {
+      return fetch(`${_apiUrl}/buddyCount/${packId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }).then((resp) => {
+        if (resp.ok) {
+          return resp.json();
+        } else {
+          throw new Error(
+            "An unknown error occurred while trying to get pack details.",
+          );
+        }
+      });
+    });
+  }
+
   export const getPacksByHangout = (hangout) => {
     return getToken().then((token) => {
         return fetch(`${_apiUrl}/searchByHangout?q=${hangout}`, {

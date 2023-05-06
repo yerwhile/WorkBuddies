@@ -73,6 +73,12 @@ namespace WorkBuddies.Controllers
             return Ok(_packRepository.GetPacksByCompany(q));
         }
 
+        [HttpGet("buddyCount/{id}")]
+        public IActionResult GetBuddyCount(int id)
+        {
+            return Ok(_packRepository.GetBuddyCountByPack(id));
+        }
+
         [HttpPost]
         public IActionResult Post(Pack pack)
         {
