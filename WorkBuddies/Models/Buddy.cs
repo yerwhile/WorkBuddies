@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace WorkBuddies.Models
 {
@@ -30,5 +31,7 @@ namespace WorkBuddies.Models
 
         [Required]
         public string FirebaseUserId { get; set; }
+        public List<Pack> Packs { get; set; }
+        public List<Hangout> Hangouts { get; set; }
     }
 }
