@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getPackDetails } from "../../modules/packManager";
+import PackBuddies from "./PackBuddies";
+import PackHangoutsS from "./PackHangouts";
+import PackHangouts from "./PackHangouts";
 
 export default function PackDetails() {
     const navigate = useNavigate;
@@ -47,27 +50,22 @@ export default function PackDetails() {
                         <th>Location</th>
                         <th>Company</th>
                     </tr>
-                    {pack?.buddies?.map((buddy) => {
-                    return <tr>
-                        <td>{buddy.firstName} {buddy.lastName}</td>
-                        <td>{buddy.city}, {buddy.state}</td>
-                        <td>{buddy.companyName}</td>
-                    </tr>
-                })}
+                    {pack?.buddies?.map((buddy) => <PackBuddies key={buddy.id} buddy={buddy} />
+                        
+                        )}
                 </table>
             </div>
             <div className="pack_hangouts">
                 <table>
-                    <tr>
-                        <th>Name</th>
-                        <th>Location</th>
-                    </tr>
-                        {pack?.hangouts?.map((hangout) => {
-                        return <tr>
-                            <td>{hangout.name}</td>
-                            <td>{hangout.streetAddress} -- {hangout.city}, {hangout.state}</td>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Location</th>
                         </tr>
-                        })}
+                    </thead>
+                    <tbody>
+                        {pack?.hangouts?.map((hangout) => <PackHangouts key={hangout.id} hangout={hangout}/>)}
+                    </tbody>
                 </table>
             </div>
             </>
