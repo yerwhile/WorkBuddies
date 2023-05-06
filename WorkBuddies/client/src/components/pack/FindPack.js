@@ -3,8 +3,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getPacksByCity, getPacksByCompany, getPacksByHangout, getPacksByState} from "../../modules/packManager";
 import { getHangoutsByState } from "../../modules/hangoutManager";
 import { getBuddiesByState } from "../../modules/buddyManager";
+import FindPackResults from "./FindPackResults";
 
-const FindPack = () => {
+const FindPack = ({user}) => {
     const [packs, setPacks] = useState([]);
     const [buddies, setBuddies] = useState([])
     const [cities, setCities] = useState([]);
@@ -43,7 +44,7 @@ const FindPack = () => {
     }, [cityChoice])
 
     useEffect(() => {
-        getPacksByHangout(hangoutChoice.id).then(setHangoutPacks)
+        getPacksByHangout(hangoutChoice).then(setHangoutPacks)
     }, [hangoutChoice])
 
     useEffect(() => {
@@ -65,6 +66,7 @@ const FindPack = () => {
 
     return (
         <>
+        <h2>Find a Pack in Your State: {user?.state}</h2>
         <div className="findPack_selectFilters">
             <label htmlFor="cities">Filter by Buddy Cities:</label>
             <select name="cities"
@@ -120,21 +122,16 @@ const FindPack = () => {
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Form Date</th>
-                        <th>Buddy Count</th>
+                        <th>Formed</th>
+                        <th>Buddy#</th>
                         <th>Join/Leave?</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {filteredPacks?.map((pack) => {
-                    return <tr>
-                        <td>{pack.name}</td>
-                        <td>{pack.createDate}</td>
-                        <td>Buddy Count</td>
-                        <td>Join/Leave?</td>
-                    </tr>
+                    {filteredPacks?.map((pack) => <FindPackResults key={pack.id} pack={pack} />
+                        
                     
-                    })}
+                    )}
                 </tbody>
             </table>
         </div>
