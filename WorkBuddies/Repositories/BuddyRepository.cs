@@ -146,6 +146,51 @@ namespace WorkBuddies.Repositories
             }
         }
 
+        public List<Buddy> GetBuddiesByState(string state)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                                SELECT b.Id, b.FirebaseUserId, b.FirstName, b.LastName, 
+                                    b.Email, b.City, b.State, b.Image, b.About,
+                                    b.Gender, b.Age, b.CompanyName, b.CompanyIndustry, b.CompanyRole
+                                FROM Buddy b
+                                        WHERE b.State LIKE @state";
+
+                    DbUtils.AddParameter(cmd, "@state", $"%{state}%");
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        var buddies = new List<Buddy>();
+                        while (reader.Read())
+                        {
+                            buddies.Add(new Buddy()
+                            {
+                                Id = DbUtils.GetInt(reader, "Id"),
+                                FirebaseUserId = DbUtils.GetString(reader, "FirebaseUserId"),
+                                FirstName = DbUtils.GetString(reader, "FirstName"),
+                                LastName = DbUtils.GetString(reader, "LastName"),
+                                Email = DbUtils.GetString(reader, "Email"),
+                                City = DbUtils.GetString(reader, "City"),
+                                State = DbUtils.GetString(reader, "State"),
+                                Image = DbUtils.GetNullableString(reader, "Image"),
+                                About = DbUtils.GetNullableString(reader, "About"),
+                                Gender = DbUtils.GetNullableString(reader, "Gender"),
+                                Age = DbUtils.GetNullableInt(reader, "Age"),
+                                CompanyName = DbUtils.GetNullableString(reader, "CompanyName"),
+                                CompanyIndustry = DbUtils.GetNullableString(reader, "CompanyIndustry"),
+                                CompanyRole = DbUtils.GetNullableString(reader, "CompanyRole")
+                            });
+                        }
+                        return buddies;
+                    }
+                }
+            }
+        }
+
 
         public void Add(Buddy buddy)
         {

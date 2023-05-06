@@ -8,5 +8,6 @@ namespace WorkBuddies.Repositories
         void Add(Hangout hangout);
         Hangout GetById(int id);
         List<Hangout> GetHangouts();
+        List<Hangout> GetHangoutsByState(string state);
     }
 }

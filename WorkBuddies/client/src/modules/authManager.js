@@ -38,6 +38,16 @@ const _saveBuddy = (buddy) => {
 
 export const getToken = () => firebase.auth().currentUser.getIdToken();
 
+export const me = () => {
+  return getToken().then((token) =>
+      fetch(`${_apiUrl}/me`, {
+          method: "GET",
+          headers: {
+              Authorization: `Bearer ${token}`,
+          },
+      }).then((resp) => resp.json()),
+  );
+};
 
 export const login = (email, pw) => {
   return firebase.auth().signInWithEmailAndPassword(email, pw)

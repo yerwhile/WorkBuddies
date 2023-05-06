@@ -44,6 +44,15 @@ namespace WorkBuddies.Controllers
             return Ok(_buddyRepository.GetBuddies());
         }
 
+        [HttpGet("searchByState")]
+        public IActionResult GetBuddiesByState()
+        {
+            var currentBuddy = GetCurrentBuddy();
+
+
+            return Ok(_buddyRepository.GetBuddiesByState(currentBuddy.State));
+        }
+
         [HttpGet("details/{id}")]
         public IActionResult GetBuddyById(int id)
         {
@@ -80,11 +89,25 @@ namespace WorkBuddies.Controllers
 
         }
 
-
         private Buddy GetCurrentBuddy()
         {
             var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             return _buddyRepository.GetByFirebaseUserId(firebaseUserId);
         }
+
+        [HttpGet("Me")]
+        public IActionResult Me()
+        {
+            var user = GetCurrentBuddy();
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(user);
+        }
+
+
+       
     }
 }

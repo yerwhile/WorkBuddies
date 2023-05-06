@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using WorkBuddies.Models;
 using WorkBuddies.Utils;
 using WorkBuddies.Repositories;
+using System.Linq;
 
 namespace WorkBuddies.Repositories
 {
@@ -58,6 +59,40 @@ namespace WorkBuddies.Repositories
                                 SELECT h.Id, h.Name, h.StreetAddress, h.City, h.State
                                     FROM Hangout h
                                 ORDER BY h.Name";
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        var hangouts = new List<Hangout>();
+                        while (reader.Read())
+                        {
+                            hangouts.Add(new Hangout()
+                            {
+                                Id = DbUtils.GetInt(reader, "Id"),
+                                Name = DbUtils.GetString(reader, "Name"),
+                                StreetAddress = DbUtils.GetString(reader, "StreetAddress"),
+                                City = DbUtils.GetString(reader, "City"),
+                                State = DbUtils.GetString(reader, "State")
+                            });
+                        }
+                        return hangouts;
+                    }
+                }
+            }
+        }
+
+        public List<Hangout> GetHangoutsByState(string state)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                                SELECT h.Id, h.[Name], h.StreetAddress, h.City, h.[State]
+                                    FROM Hangout h
+                                WHERE h.[State] LIKE @state";
+
+                    DbUtils.AddParameter(cmd, "@state", $"%{state}%");
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
