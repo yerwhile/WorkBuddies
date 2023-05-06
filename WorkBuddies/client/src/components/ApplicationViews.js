@@ -7,6 +7,7 @@ import FormPack from "./pack/FormPack";
 import PackDetails from "./pack/PackDetails";
 import FindPack from "./pack/FindPack";
 import { getBuddyDetails, getToken, me } from "../modules/authManager";
+import Profile from "./profile/Profile";
 
 export default function ApplicationViews({ isLoggedIn, user }) {
 
@@ -21,10 +22,13 @@ export default function ApplicationViews({ isLoggedIn, user }) {
           />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
+          <Route path="buddy">
+              <Route path="profile/:id" element={<Profile user={user}/>}/>
+          </Route>
           <Route path="pack">
-            <Route path="formPack" element={<FormPack />} />
-            <Route path="packDetails/:id" element={<PackDetails />} />
-            <Route path ="findPack" element={<FindPack user={user} />} />
+              <Route path="formPack" element={<FormPack />} />
+              <Route path="packDetails/:id" element={<PackDetails />} />
+              <Route path ="findPack" element={<FindPack user={user} />} />
           </Route>
           <Route path="*" element={<p>Whoops, nothing here...</p>} />
         </Route>

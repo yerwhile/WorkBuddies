@@ -53,7 +53,7 @@ namespace WorkBuddies.Controllers
             return Ok(_buddyRepository.GetBuddiesByState(currentBuddy.State));
         }
 
-        [HttpGet("details/{id}")]
+        [HttpGet("profile/{id}")]
         public IActionResult GetBuddyById(int id)
         {
 

@@ -129,8 +129,7 @@ const FindPack = ({user}) => {
                 </thead>
                 <tbody>
                     {filteredPacks?.map((pack) => <FindPackResults key={pack.id} pack={pack} />
-                        
-                    
+
                     )}
                 </tbody>
             </table>

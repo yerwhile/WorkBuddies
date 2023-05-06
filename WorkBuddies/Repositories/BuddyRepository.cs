@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using WorkBuddies.Models;
 using WorkBuddies.Utils;
+using System.Linq;
 using WorkBuddies.Repositories;
 
 namespace WorkBuddies.Repositories
@@ -65,10 +66,17 @@ namespace WorkBuddies.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT b.Id, b.FirebaseUserId, b.FirstName, b.LastName, 
-                               b.Email, b.City, b.State, b.Image, b.About,
-                               b.Gender, b.Age, b.CompanyName, b.CompanyIndustry, b.CompanyRole
-                          FROM Buddy b
+                        SELECT b.Id, b.[FirstName], b.[LastName],
+                             b.Email, b.FirebaseUserId,
+                            b.City, b.[State], b.[Image], b.About, b.Gender, b.Age, b.CompanyName, b.CompanyIndustry, b.CompanyRole,
+                            p.Id as PackId, p.[Name] as PackName, p.[Description], p.Schedule, p.[Image] as PackImage, p.CreateDate, p.IsOpen,
+                            h.Id as HangoutId, h.[Name] as HangoutName, h.StreetAddress as HangoutStreetAddress,
+                            h.City as HangoutCity, h.[State] as HangoutState
+                                FROM Buddy b
+                            LEFT JOIN BuddyPack bp ON bp.BuddyId = b.Id
+                            LEFT JOIN Pack p ON p.Id = bp.PackId
+                            LEFT JOIN PackHangout ph ON ph.PackId = p.Id
+                            LEFT JOIN Hangout h ON h.Id = ph.HangoutId
                         WHERE b.Id = @id";
 
                     DbUtils.AddParameter(cmd, "@id", id);
@@ -76,25 +84,71 @@ namespace WorkBuddies.Repositories
                     Buddy buddy = null;
 
                     var reader = cmd.ExecuteReader();
-                    if (reader.Read())
+                    while (reader.Read())
                     {
-                        buddy = new Buddy()
+                        if(buddy == null)
                         {
-                            Id = DbUtils.GetInt(reader, "Id"),
-                            FirebaseUserId = DbUtils.GetString(reader, "FirebaseUserId"),
-                            FirstName = DbUtils.GetString(reader, "FirstName"),
-                            LastName = DbUtils.GetString(reader, "LastName"),
-                            Email = DbUtils.GetString(reader, "Email"),
-                            City = DbUtils.GetString(reader, "City"),
-                            State = DbUtils.GetString(reader, "State"),
-                            Image = DbUtils.GetString(reader, "Image"),
-                            About = DbUtils.GetString(reader, "About"),
-                            Gender = DbUtils.GetString(reader, "Gender"),
-                            Age = DbUtils.GetInt(reader, "Age"),
-                            CompanyName = DbUtils.GetString(reader, "CompanyName"),
-                            CompanyIndustry = DbUtils.GetString(reader, "CompanyIndustry"),
-                            CompanyRole = DbUtils.GetString(reader, "CompanyRole")
-                        };
+                            buddy = new Buddy()
+                            {
+                                Id = DbUtils.GetInt(reader, "Id"),
+                                FirebaseUserId = DbUtils.GetString(reader, "FirebaseUserId"),
+                                FirstName = DbUtils.GetString(reader, "FirstName"),
+                                LastName = DbUtils.GetString(reader, "LastName"),
+                                Email = DbUtils.GetString(reader, "Email"),
+                                City = DbUtils.GetString(reader, "City"),
+                                State = DbUtils.GetString(reader, "State"),
+                                Image = DbUtils.GetString(reader, "Image"),
+                                About = DbUtils.GetString(reader, "About"),
+                                Gender = DbUtils.GetString(reader, "Gender"),
+                                Age = DbUtils.GetInt(reader, "Age"),
+                                CompanyName = DbUtils.GetString(reader, "CompanyName"),
+                                CompanyIndustry = DbUtils.GetString(reader, "CompanyIndustry"),
+                                CompanyRole = DbUtils.GetString(reader, "CompanyRole"),
+                                Packs = new List<Pack>(),
+                                Hangouts = new List<Hangout>()
+                            };
+                        }
+
+                        if (DbUtils.IsNotDbNull(reader, "PackId"))
+                        {
+                            var packId = reader.GetInt32(reader.GetOrdinal("PackId"));
+
+
+                            var existingPack = buddy.Packs.FirstOrDefault(p => p.Id == packId) ?? new Pack()
+                            {
+                                Id = DbUtils.GetInt(reader, "PackId"),
+                                Name = DbUtils.GetString(reader, "PackName"),
+                                Description = DbUtils.GetString(reader, "Description"),
+                                Schedule = DbUtils.GetString(reader, "Schedule"),
+                                Image = DbUtils.GetNullableString(reader, "PackImage"),
+                                CreateDate = DbUtils.GetDateTime(reader, "CreateDate"),
+                                IsOpen = DbUtils.GetBool(reader, "IsOpen")
+                            };
+                            if (buddy.Packs.FirstOrDefault(p => p.Id == packId) == null)
+                            {
+                                buddy.Packs.Add(existingPack);
+                            }
+
+                        }
+
+                        if (DbUtils.IsNotDbNull(reader, "HangoutId"))
+                        {
+                            var hangoutId = reader.GetInt32(reader.GetOrdinal("HangoutId"));
+                            var existingHangout = buddy.Hangouts.FirstOrDefault(h => h.Id == hangoutId) ?? new Hangout()
+                            {
+                                Id = hangoutId,
+                                Name = DbUtils.GetString(reader, "HangoutName"),
+                                StreetAddress = DbUtils.GetString(reader, "HangoutStreetAddress"),
+                                City = DbUtils.GetString(reader, "HangoutCity"),
+                                State = DbUtils.GetString(reader, "HangoutState")
+                            };
+                            if (buddy.Hangouts.FirstOrDefault(h => h.Id == hangoutId) == null)
+                            {
+                                buddy.Hangouts.Add(existingHangout);
+                            }
+
+                        }
+
                     }
                     reader.Close();
 
