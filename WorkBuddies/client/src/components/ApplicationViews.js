@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./auth/Login";
 import Register from "./auth/Register";
@@ -6,7 +5,6 @@ import Welcome from "./Welcome";
 import FormPack from "./pack/FormPack";
 import PackDetails from "./pack/PackDetails";
 import FindPack from "./pack/FindPack";
-import { getBuddyDetails, getToken, me } from "../modules/authManager";
 import Profile from "./profile/Profile";
 
 export default function ApplicationViews({ isLoggedIn, user }) {

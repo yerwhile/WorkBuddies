@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getPackDetails } from "../../modules/packManager";
 import PackBuddies from "./PackBuddies";
-import PackHangoutsS from "./PackHangouts";
 import PackHangouts from "./PackHangouts";
 
 export default function PackDetails() {
