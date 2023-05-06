@@ -13,9 +13,11 @@ namespace WorkBuddies.Controllers
     public class PackController : ControllerBase
     {
         private readonly IPackRepository _packRepository;
-        public PackController(IPackRepository packRepository)
+        private readonly IBuddyRepository _buddyRepository;
+        public PackController(IPackRepository packRepository, IBuddyRepository buddyRepository)
         {
             _packRepository = packRepository;
+            _buddyRepository = buddyRepository;
         }
 
 
@@ -39,6 +41,20 @@ namespace WorkBuddies.Controllers
 
         }
 
+        [HttpGet("searchByState")]
+        public IActionResult GetPacksByState()
+        {
+            var currentBuddy = GetCurrentBuddy();
+
+            return Ok(_packRepository.GetPacksByState(currentBuddy.State));
+        }
+
+        private Buddy GetCurrentBuddy()
+        {
+            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return _buddyRepository.GetByFirebaseUserId(firebaseUserId);
+        }
+
         [HttpGet("searchByHangout")]
         public IActionResult GetPacksByHangout(string q)
         {
@@ -55,6 +71,12 @@ namespace WorkBuddies.Controllers
         public IActionResult GetPacksByCompany(string q)
         {
             return Ok(_packRepository.GetPacksByCompany(q));
+        }
+
+        [HttpGet("buddyCount/{id}")]
+        public IActionResult GetBuddyCount(int id)
+        {
+            return Ok(_packRepository.GetBuddyCountByPack(id));
         }
 
         [HttpPost]

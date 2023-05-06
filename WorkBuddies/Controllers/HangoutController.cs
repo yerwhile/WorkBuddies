@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Security.Claims;
 using WorkBuddies.Models;
 using WorkBuddies.Repositories;
 
@@ -12,9 +13,12 @@ namespace WorkBuddies.Controllers
     public class HangoutController : Controller
     {
         private readonly IHangoutRepository _hangoutRepository;
-        public HangoutController(IHangoutRepository hangoutRepository)
+        private readonly IBuddyRepository _buddyRepository;
+
+        public HangoutController(IHangoutRepository hangoutRepository, IBuddyRepository buddyRepository)
         {
             _hangoutRepository = hangoutRepository;
+            _buddyRepository = buddyRepository;
         }
 
 
@@ -23,6 +27,20 @@ namespace WorkBuddies.Controllers
         {
 
             return Ok(_hangoutRepository.GetHangouts());
+        }
+
+        [HttpGet("searchByState")]
+        public IActionResult GetHangoutsByState()
+        {
+            var currentBuddy = GetCurrentBuddy();
+
+            return Ok(_hangoutRepository.GetHangoutsByState(currentBuddy.State));
+        }
+
+        private Buddy GetCurrentBuddy()
+        {
+            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return _buddyRepository.GetByFirebaseUserId(firebaseUserId);
         }
 
         [HttpGet("hangoutDetails/{id}")]
