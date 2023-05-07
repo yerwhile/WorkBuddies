@@ -1,19 +1,15 @@
 import { useEffect, useState } from "react";
 import { getBuddyCount } from "../../modules/packManager";
 
-const PackBuddies = ({pack}) => {
+const PackBuddies = ({buddy, buddyCount}) => {
 
-    const [buddyCount, setBuddyCount] = useState(0);
-
-    useEffect(() => {
-        getBuddyCount(pack.id).then(setBuddyCount);
-    }, [])
+    
 
     return(
         <tr>
-            <td>{pack.name}</td>
-            <td>{pack.createDate}</td>
-            <td>{buddyCount}</td>
+            <td>{buddy.firstName} {buddy.lastName}</td>
+            <td>{buddy.city}, {buddy.state}</td>
+            <td>{buddy.companyName}</td>
         </tr>
     ) 
 }

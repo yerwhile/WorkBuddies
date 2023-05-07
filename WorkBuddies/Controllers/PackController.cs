@@ -79,6 +79,14 @@ namespace WorkBuddies.Controllers
             return Ok(_packRepository.GetBuddyCountByPack(id));
         }
 
+        [HttpGet("isMember/{packId}")]
+        public IActionResult GetIsMember(int packId)
+        {
+            var currentBuddy = GetCurrentBuddy();
+
+            return Ok(_packRepository.DoesBuddyBelong(currentBuddy.Id, packId));
+        }
+
         [HttpPost]
         public IActionResult Post(Pack pack)
         {

@@ -12,6 +12,8 @@ namespace WorkBuddies.Repositories
         List<Pack> GetPacksByCity(string city);
         List<Pack> GetPacksByCompany(string company);
         Pack GetPackById(int id);
+
+        bool DoesBuddyBelong(int buddyId, int packId);
         void Update(Pack pack);
         int GetBuddyCountByPack(int packId);
     }

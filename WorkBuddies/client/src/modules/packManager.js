@@ -79,6 +79,26 @@ export const getPackDetails = (id) => {
       });
     });
   }
+  
+  export const isBuddyMember = (packId) => {
+  
+    return getToken().then(token => {
+      return fetch(`${_apiUrl}/isMember/${packId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }).then((resp) => {
+        if (resp.ok) {
+          return resp.json();
+        } else {
+          throw new Error(
+            "An unknown error occurred while trying to get pack details.",
+          );
+        }
+      });
+    });
+  }
 
   export const getPacksByHangout = (hangout) => {
     return getToken().then((token) => {

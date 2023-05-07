@@ -25,7 +25,7 @@ export default function ApplicationViews({ isLoggedIn, user }) {
           </Route>
           <Route path="pack">
               <Route path="formPack" element={<FormPack />} />
-              <Route path="packDetails/:id" element={<PackDetails />} />
+              <Route path="packDetails/:id" element={<PackDetails user={user}/>} />
               <Route path ="findPack" element={<FindPack user={user} />} />
           </Route>
           <Route path="*" element={<p>Whoops, nothing here...</p>} />

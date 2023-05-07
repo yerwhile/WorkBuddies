@@ -370,6 +370,39 @@ namespace WorkBuddies.Repositories
             }
         }
 
+        public bool DoesBuddyBelong(int buddyId, int packId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT bp.Id AS BuddyPackId, bp.BuddyId, bp.PackId, p.Id, b.Id as PrimaryBuddyId
+                                            FROM Pack p
+                                                LEFT JOIN BuddyPack bp ON bp.PackId = p.Id
+                                                LEFT JOIN Buddy b ON b.Id = bp.BuddyId
+                                            WHERE b.Id = @buddyId AND p.Id = @packId";
+
+                    DbUtils.AddParameter(cmd, "@buddyId", buddyId);
+                    DbUtils.AddParameter(cmd, "@packId", packId);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        int anyId = 0;
+                        if(reader.Read())
+                        {
+                            anyId = reader.GetInt32(reader.GetOrdinal("Id"));
+                            if (anyId > 0)
+                            {
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+                }
+            }
+        }
+
 
         public void Add(Pack pack)
         {

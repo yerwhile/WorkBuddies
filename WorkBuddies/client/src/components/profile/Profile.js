@@ -42,6 +42,7 @@ const Profile = ({user}) => {
                             <th>Name</th>
                             <th>Formed</th>
                             <th>Buddy Count</th>
+                            <th>Details</th>
                         </tr>
                     </thead>
                     <tbody>
