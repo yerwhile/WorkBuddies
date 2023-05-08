@@ -370,6 +370,39 @@ namespace WorkBuddies.Repositories
             }
         }
 
+        public bool DoesBuddyBelong(int buddyId, int packId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT bp.Id AS BuddyPackId, bp.BuddyId, bp.PackId, p.Id, b.Id as PrimaryBuddyId
+                                            FROM Pack p
+                                                LEFT JOIN BuddyPack bp ON bp.PackId = p.Id
+                                                LEFT JOIN Buddy b ON b.Id = bp.BuddyId
+                                            WHERE b.Id = @buddyId AND p.Id = @packId";
+
+                    DbUtils.AddParameter(cmd, "@buddyId", buddyId);
+                    DbUtils.AddParameter(cmd, "@packId", packId);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        int anyId = 0;
+                        if(reader.Read())
+                        {
+                            anyId = reader.GetInt32(reader.GetOrdinal("Id"));
+                            if (anyId > 0)
+                            {
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+                }
+            }
+        }
+
 
         public void Add(Pack pack)
         {
@@ -393,6 +426,41 @@ namespace WorkBuddies.Repositories
                 }
             }
         }
+
+        public PackVibe GetPackVibeById(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT pv.Id, pv.PackId, pv.VibeId
+                          FROM PackVibe pv
+                        WHERE pv.Id = @id";
+
+                    DbUtils.AddParameter(cmd, "@id", id);
+
+                    PackVibe packVibe = null;
+
+                    var reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        packVibe = new PackVibe()
+                        {
+                            Id = DbUtils.GetInt(reader, "Id"),
+                            PackId = DbUtils.GetInt(reader, "PackId"),
+                            VibeId = DbUtils.GetInt(reader, "VibeId")
+                        };
+                    }
+                    reader.Close();
+
+                    return packVibe;
+                }
+            }
+        }
+
+        
 
         public void Update(Pack pack)
         {
@@ -418,6 +486,45 @@ namespace WorkBuddies.Repositories
                     DbUtils.AddParameter(cmd, "@IsOpen", pack.IsOpen);
                     DbUtils.AddParameter(cmd, "@Id", pack.Id);
 
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void AddPackVibes(PackVibe packVibe)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                foreach(var vibeId in packVibe.VibeIds)
+                {
+                    using (var cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = @"INSERT INTO PackVibe (PackId, VibeId)
+                                        OUTPUT INSERTED.ID
+                                        VALUES (@packId, @vibeId)";
+
+                        DbUtils.AddParameter(cmd, "@packId", packVibe.PackId);
+                        DbUtils.AddParameter(cmd, "@vibeId", vibeId);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                
+            }
+        }
+
+        public void DeleteVibesOnPack(int packId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"DELETE FROM PackVibe
+                                        WHERE PackVibe.PackId = @id";
+
+                    DbUtils.AddParameter(cmd, "@id", packId);
                     cmd.ExecuteNonQuery();
                 }
             }

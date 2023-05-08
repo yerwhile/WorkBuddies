@@ -29,7 +29,7 @@ export default function Header({ isLoggedIn, user }) {
                   <NavLink tag={RRNavLink} to="/">Home</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={RRNavLink} to="pack/formPack">Form a Pack</NavLink>
+                  <NavLink tag={RRNavLink} to={`pack/formPack/${user?.id}`}>Form a Pack</NavLink>
                 </NavItem>
                 <NavItem>
                   <NavLink tag={RRNavLink} to="pack/findPack">Find a Pack</NavLink>

@@ -1,17 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useParams } from "react-router-dom";
 import { login } from "../../modules/authManager";
 import { addPack } from "../../modules/packManager";
 
 export default function FormPack() {
   const navigate = useNavigate();
+  const {id} = useParams();
 
-  const [name, setName] = useState();
-  const [description, setDescription] = useState();
-  const [schedule, setSchedule] = useState();
-  const [image, setImage] = useState();
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [schedule, setSchedule] = useState("");
+  const [image, setImage] = useState("");
+  const [founderId, setFounderId] = useState(null);
 
+  useEffect(() => {
+    setFounderId(id);
+  }, [])
 
   const formPackSubmit = (e) => {
     e.preventDefault();
@@ -19,7 +24,8 @@ export default function FormPack() {
         name,
         description,
         schedule,
-        image
+        image,
+        founderId
     }
 
     addPack(pack).then((packData) => {navigate(`/pack/packDetails/${packData.id}`)})
