@@ -18,7 +18,6 @@ export default function PackDetails() {
 
     useEffect(() => {
         isBuddyMember(id).then(setIsMember);
-        
     }, [pack])
 
     useEffect(() => {
@@ -54,8 +53,7 @@ export default function PackDetails() {
                 {
                     isMember == true
                         ? <>
-                            <Button>Add Vibe</Button>
-                            <Button>Delete Vibe</Button>
+                            <Button href={`../addVibe/${id}`}>Edit Vibes</Button>
                             </>
                         : ""
                 }

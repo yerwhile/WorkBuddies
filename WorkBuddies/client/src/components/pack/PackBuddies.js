@@ -1,9 +1,4 @@
-import { useEffect, useState } from "react";
-import { getBuddyCount } from "../../modules/packManager";
-
 const PackBuddies = ({buddy, buddyCount}) => {
-
-    
 
     return(
         <tr>
