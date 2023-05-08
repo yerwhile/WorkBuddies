@@ -32,6 +32,7 @@ namespace WorkBuddies
             services.AddTransient<IBuddyRepository, BuddyRepository>();
             services.AddTransient<IPackRepository, PackRepository>();
             services.AddTransient<IHangoutRepository, HangoutRepository>();
+            services.AddTransient<IVibeRepository,  VibeRepository>();
 
             var firebaseProjectId = Configuration.GetValue<string>("FirebaseProjectId");
             var googleTokenUrl = $"https://securetoken.google.com/{firebaseProjectId}";

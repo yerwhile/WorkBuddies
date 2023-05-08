@@ -79,6 +79,26 @@ export const getPackDetails = (id) => {
       });
     });
   }
+  
+  export const isBuddyMember = (packId) => {
+  
+    return getToken().then(token => {
+      return fetch(`${_apiUrl}/isMember/${packId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }).then((resp) => {
+        if (resp.ok) {
+          return resp.json();
+        } else {
+          throw new Error(
+            "An unknown error occurred while trying to get pack details.",
+          );
+        }
+      });
+    });
+  }
 
   export const getPacksByHangout = (hangout) => {
     return getToken().then((token) => {
@@ -170,4 +190,25 @@ export const getPacksByCompany = (company) => {
         })
     })
 }
-  
+
+export const addVibeToPack = (packVibe, postId) => {
+  return getToken().then((token) => {
+    return fetch(`${_apiUrl}/addVibeToPack/${postId}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(packVibe)
+    }).then((resp) => {
+      if (resp.ok) {
+        console.log("PackVibe added successfully!")
+        return resp.json();
+      } else {
+        throw new Error(
+          "An error occurred while trying to add a PackVibe.",
+        );
+      }
+    });
+  });
+}

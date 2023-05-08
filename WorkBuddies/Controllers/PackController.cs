@@ -79,6 +79,16 @@ namespace WorkBuddies.Controllers
             return Ok(_packRepository.GetBuddyCountByPack(id));
         }
 
+        [HttpGet("isMember/{packId}")]
+        public IActionResult GetIsMember(int packId)
+        {
+            var currentBuddy = GetCurrentBuddy();
+
+            return Ok(_packRepository.DoesBuddyBelong(currentBuddy.Id, packId));
+        }
+
+        
+
         [HttpPost]
         public IActionResult Post(Pack pack)
         {
@@ -98,6 +108,38 @@ namespace WorkBuddies.Controllers
                 return BadRequest();
             }
             
+        }
+
+        [HttpGet("packVibe/{id}")]
+        public IActionResult GetPackVibeById(int id)
+        {
+
+            var packVibe = _packRepository.GetPackVibeById(id);
+            if (packVibe == null)
+            {
+                return NotFound();
+            }
+            return Ok(packVibe);
+
+        }
+
+        [HttpPost("addVibeToPack/{packId}")]
+        public IActionResult AddVibesToPack(PackVibe packVibe, int packId)
+        {
+            try
+            {
+                _packRepository.DeleteVibesOnPack(packId);
+                packVibe.PackId = packId;
+                _packRepository.AddPackVibes(packVibe);
+                return CreatedAtAction(
+                    nameof(GetPackVibeById),
+                    new { packVibe.Id },
+                    packVibe);
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
 
         [HttpPut("{id}")]
