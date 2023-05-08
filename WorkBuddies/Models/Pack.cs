@@ -13,6 +13,7 @@ namespace WorkBuddies.Models
         public string? Image { get; set; }
         public DateTime CreateDate { get; set; }
         public bool IsOpen { get; set; }
+        public int founderId { get; set; }
         public List<Vibe> Vibes { get; set; }
         public List<Hangout> Hangouts { get; set; }
         public List<Buddy> Buddies { get; set; }

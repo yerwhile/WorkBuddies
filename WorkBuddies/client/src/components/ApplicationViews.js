@@ -7,6 +7,7 @@ import PackDetails from "./pack/PackDetails";
 import FindPack from "./pack/FindPack";
 import Profile from "./profile/Profile";
 import AddVibeForm from "./pack/AddVibeForm";
+import CreateVibe from "./vibe/CreateVibe";
 
 export default function ApplicationViews({ isLoggedIn, user }) {
 
@@ -25,10 +26,13 @@ export default function ApplicationViews({ isLoggedIn, user }) {
               <Route path="profile/:id" element={<Profile user={user}/>}/>
           </Route>
           <Route path="pack">
-              <Route path="formPack" element={<FormPack />} />
+              <Route path="formPack/:id" element={<FormPack />} />
               <Route path="packDetails/:id" element={<PackDetails user={user}/>} />
               <Route path ="findPack" element={<FindPack user={user} />} />
               <Route path="addVibe/:id" element={<AddVibeForm />} />
+          </Route>
+          <Route path="vibe">
+              <Route path="createVibe/:id" element={<CreateVibe />} />
           </Route>
           <Route path="*" element={<p>Whoops, nothing here...</p>} />
         </Route>

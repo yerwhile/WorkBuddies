@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
 import { getAllVibes, getVibeIdsByPack } from "../../modules/vibeManager";
-import { addVibeToPack } from "../../modules/packManager";
+import { addVibeToPack, getPackDetails } from "../../modules/packManager";
 
 export const AddVibeForm = () => {
 
   const [vibes, setVibes] = useState([]);
   const [packVibes, setPackVibes] = useState([]);
+  const [pack, setPack] = useState({});
   const { id } = useParams();
 
   const navigate = useNavigate()
@@ -16,6 +17,7 @@ export const AddVibeForm = () => {
   useEffect(() => {
     getAllVibes().then(setVibes);
     getVibeIdsByPack(id).then(setPackVibes);
+    getPackDetails(id).then(setPack);
   }, []);
 
 
@@ -43,6 +45,7 @@ export const AddVibeForm = () => {
   
   return (
     <div className="container">
+      <h2>Add or remove existing vibes from {pack?.name}</h2>
       <Form>
         {vibes.map((vibe) => {
           return (
@@ -66,6 +69,7 @@ export const AddVibeForm = () => {
           Cancel
         </Button>
       </Form>
+      <h5>Can't find the vibe you want to add? <Link to={`../../vibe/createVibe/${id}`}>Create a new vibe!</Link></h5>
     </div>
   );
 };
