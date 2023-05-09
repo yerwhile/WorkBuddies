@@ -191,15 +191,37 @@ export const getPacksByCompany = (company) => {
     })
 }
 
-export const addVibeToPack = (packVibe, postId) => {
+export const addVibeToPack = (packVibe, packId) => {
   return getToken().then((token) => {
-    return fetch(`${_apiUrl}/addVibeToPack/${postId}`, {
+    return fetch(`${_apiUrl}/addVibeToPack/${packId}`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify(packVibe)
+    }).then((resp) => {
+      if (resp.ok) {
+        console.log("PackVibe added successfully!")
+        return resp.json();
+      } else {
+        throw new Error(
+          "An error occurred while trying to add a PackVibe.",
+        );
+      }
+    });
+  });
+}
+
+export const addHangoutToPack = (packHangout, packId) => {
+  return getToken().then((token) => {
+    return fetch(`${_apiUrl}/addHangoutToPack/${packId}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(packHangout)
     }).then((resp) => {
       if (resp.ok) {
         console.log("PackVibe added successfully!")

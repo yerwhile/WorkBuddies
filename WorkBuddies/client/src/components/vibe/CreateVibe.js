@@ -16,7 +16,7 @@ export default function CreateVibe() {
         name
     }
 
-    addVibe(vibe).then(navigate(`/pack/addVibe/${id}`))
+    addVibe(vibe).then(navigate(`/pack/editVibes/${id}`))
   };
 
   return (

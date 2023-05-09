@@ -56,6 +56,12 @@ namespace WorkBuddies.Controllers
 
         }
 
+        [HttpGet("hangoutsByPack/{packId}")]
+        public IActionResult GetHangoutsByPack(int packId)
+        {
+            return Ok(_hangoutRepository.GetHangoutIdsByPack(packId));
+        }
+
         [HttpPost]
         public IActionResult Post(Hangout hangout)
         {
