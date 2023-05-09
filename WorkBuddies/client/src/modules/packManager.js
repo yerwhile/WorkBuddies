@@ -119,6 +119,25 @@ export const getPackDetails = (id) => {
     });
 }
 
+export const getPacksByVibe = (vibeName) => {
+    return getToken().then((token) => {
+        return fetch(`${_apiUrl}/searchByVibe?q=${vibeName}`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }).then((resp) => {
+            if(resp.ok) {
+                return resp.json();
+            } else {
+                throw new Error(
+                    "An unknown error occurred while trying to get packs.",
+                );
+            }
+        });
+    });
+}
+
   export const getPacksByCity = (city) => {
     return getToken().then((token) => {
         return fetch(`${_apiUrl}/searchByCity?q=${city}`, {

@@ -11,6 +11,7 @@ import CreateVibe from "./vibe/CreateVibe";
 import AddHangoutForm from "./pack/AddHangoutForm";
 import CreateHangout from "./hangout/CreateHangout";
 import EditProfile from "./profile/EditProfile";
+import FindByVibe from "./vibe/FindByVibe";
 
 export default function ApplicationViews({ isLoggedIn, user }) {
 
@@ -38,6 +39,7 @@ export default function ApplicationViews({ isLoggedIn, user }) {
           </Route>
           <Route path="vibe">
               <Route path="createVibe/:id" element={<CreateVibe />} />
+              <Route path="findByVibe" element={<FindByVibe />} />
           </Route>
           <Route path="hangout">
             <Route path="createHangout/:id" element={<CreateHangout />} />

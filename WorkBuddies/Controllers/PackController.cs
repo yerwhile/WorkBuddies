@@ -41,6 +41,13 @@ namespace WorkBuddies.Controllers
 
         }
 
+        [HttpGet("searchByVibe")]
+        public IActionResult GetPacksByVibe(string q)
+        {
+
+            return Ok(_packRepository.GetPacksByVibe(q));
+        }
+
         [HttpGet("searchByState")]
         public IActionResult GetPacksByState()
         {
