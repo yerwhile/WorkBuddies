@@ -9,5 +9,6 @@ namespace WorkBuddies.Repositories
         Hangout GetById(int id);
         List<Hangout> GetHangouts();
         List<Hangout> GetHangoutsByState(string state);
+        List<int> GetHangoutIdsByPack(int packId);
     }
 }

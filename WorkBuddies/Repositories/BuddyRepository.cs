@@ -277,6 +277,58 @@ namespace WorkBuddies.Repositories
             }
         }
 
+        public BuddyPack GetBuddyPackById(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT bp.Id, bp.PackId, bp.BuddyId
+                          FROM BuddyPack bp
+                        WHERE bp.Id = @id";
+
+                    DbUtils.AddParameter(cmd, "@id", id);
+
+                    BuddyPack buddyPack = null;
+
+                    var reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        buddyPack = new BuddyPack()
+                        {
+                            Id = DbUtils.GetInt(reader, "Id"),
+                            PackId = DbUtils.GetInt(reader, "PackId"),
+                            BuddyId = DbUtils.GetInt(reader, "BuddyId")
+                        };
+                    }
+                    reader.Close();
+
+                    return buddyPack;
+                }
+            }
+        }
+
+        public void AddBuddyPack(BuddyPack buddyPack)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO BuddyPack (BuddyId, PackId)
+                                        OUTPUT INSERTED.ID
+                                        VALUES (@buddyId, @packId)";
+
+                    DbUtils.AddParameter(cmd, "@buddyId", buddyPack.BuddyId);
+                    DbUtils.AddParameter(cmd, "@packId", buddyPack.PackId);
+
+                    buddyPack.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
+
         public void Update(Buddy buddy)
         {
             using (var conn = Connection)

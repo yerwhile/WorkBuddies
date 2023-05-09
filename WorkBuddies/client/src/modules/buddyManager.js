@@ -59,3 +59,25 @@ export const getBuddiesByState = (state) => {
         });
     });
 }
+
+export const addBuddyPack = (buddyPack) => {
+    return getToken().then((token) => {
+      return fetch(_apiUrl +"/addBuddyPack", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(buddyPack)
+      }).then((resp) => {
+        if (resp.ok) {
+          console.log("Pack formed successfully!")
+          return resp.json();
+        } else {
+          throw new Error(
+            "An error occurred while trying to form a pack.",
+          );
+        }
+      });
+    });
+  }

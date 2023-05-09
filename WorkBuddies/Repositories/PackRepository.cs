@@ -460,7 +460,79 @@ namespace WorkBuddies.Repositories
             }
         }
 
-        
+        public PackHangout GetPackHangoutById(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT ph.Id, ph.PackId, ph.HangoutId
+                          FROM PackHangout ph
+                        WHERE ph.Id = @id";
+
+                    DbUtils.AddParameter(cmd, "@id", id);
+
+                    PackHangout packHangout = null;
+
+                    var reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        packHangout = new PackHangout()
+                        {
+                            Id = DbUtils.GetInt(reader, "Id"),
+                            PackId = DbUtils.GetInt(reader, "PackId"),
+                            HangoutId = DbUtils.GetInt(reader, "HangoutId")
+                        };
+                    }
+                    reader.Close();
+
+                    return packHangout;
+                }
+            }
+        }
+
+        public void AddPackHangouts(PackHangout packHangout)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                foreach (var hangoutId in packHangout.HangoutIds)
+                {
+                    using (var cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = @"INSERT INTO PackHangout (PackId, HangoutId)
+                                        OUTPUT INSERTED.ID
+                                        VALUES (@packId, @hangoutId)";
+
+                        DbUtils.AddParameter(cmd, "@packId", packHangout.PackId);
+                        DbUtils.AddParameter(cmd, "@hangoutId", hangoutId);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+            }
+        }
+
+        public void DeleteHangoutsOnPack(int packId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"DELETE FROM PackHangout
+                                        WHERE PackHangout.PackId = @id";
+
+                    DbUtils.AddParameter(cmd, "@id", packId);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+
 
         public void Update(Pack pack)
         {
