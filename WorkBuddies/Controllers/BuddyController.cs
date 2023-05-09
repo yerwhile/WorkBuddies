@@ -66,6 +66,17 @@ namespace WorkBuddies.Controllers
 
         }
 
+        [HttpGet("getBuddyPacks/{id}")]
+        public IActionResult GetBuddyPackById(int id)
+        {
+            var buddyPack = _buddyRepository.GetBuddyPackById(id);
+            if (buddyPack == null)
+            {
+                return NotFound();
+            }
+            return Ok(buddyPack);
+        }
+
         [HttpPost]
         public IActionResult Post(Buddy buddy)
         {
@@ -74,6 +85,16 @@ namespace WorkBuddies.Controllers
                 nameof(GetBuddyByFire),
                 new { firebaseUserId = buddy.FirebaseUserId },
                 buddy);
+        }
+
+        [HttpPost("addBuddyPack")]
+        public IActionResult PostBuddyPack(BuddyPack buddyPack)
+        {
+            _buddyRepository.AddBuddyPack(buddyPack);
+            return CreatedAtAction(
+                nameof(GetBuddyPackById),
+                new { buddyPack.Id },
+                buddyPack);
         }
 
         [HttpPut("{id}")]

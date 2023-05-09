@@ -114,6 +114,38 @@ namespace WorkBuddies.Repositories
             }
         }
 
+        public List<int> GetHangoutIdsByPack(int packId)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                                SELECT h.Id
+                                    FROM Hangout h
+                                JOIN PackHangout ph ON ph.HangoutId = h.Id
+                                WHERE ph.PackId = @packId";
+
+                    DbUtils.AddParameter(cmd, "@packId", packId);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        var hangoutIds = new List<int>();
+                        while (reader.Read())
+                        {
+                            var hangout = new Hangout()
+                            {
+                                Id = DbUtils.GetInt(reader, "Id")
+                            };
+                            hangoutIds.Add(hangout.Id);
+                        }
+                        return hangoutIds;
+                    }
+                }
+            }
+        }
+
         public void Add(Hangout hangout)
         {
             using (var conn = Connection)
@@ -128,7 +160,7 @@ namespace WorkBuddies.Repositories
                     DbUtils.AddParameter(cmd, "@name", hangout.Name);
                     DbUtils.AddParameter(cmd, "@streetAddress", hangout.StreetAddress);
                     DbUtils.AddParameter(cmd, "@city", hangout.City);
-                    DbUtils.AddParameter(cmd, "@ctate", hangout.State);
+                    DbUtils.AddParameter(cmd, "@state", hangout.State);
 
                     hangout.Id = (int)cmd.ExecuteScalar();
                 }

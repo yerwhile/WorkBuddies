@@ -49,11 +49,11 @@ export default function PackDetails() {
                 })}
                 </ul>
             </div>
-            <div className="pack_vibes__buttons">
+            <div className="pack_vibes__button">
                 {
                     isMember == true
                         ? <>
-                            <Button href={`../addVibe/${id}`}>Edit Vibes</Button>
+                            <Button href={`../editVibes/${id}`}>Edit Vibes</Button>
                             </>
                         : ""
                 }
@@ -77,17 +77,28 @@ export default function PackDetails() {
             </table>
         </div>
         <div className="pack_hangouts">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Location</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {pack?.hangouts?.map((hangout) => <PackHangouts key={hangout.id} hangout={hangout}/>)}
-                </tbody>
-            </table>
+            <div className="pack_hangouts__list">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Location</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {pack?.hangouts?.map((hangout) => <PackHangouts key={hangout.id} hangout={hangout}/>)}
+                    </tbody>
+                </table>
+            </div>
+            <div className="pack_hangouts__button">
+                {
+                    isMember == true
+                        ? <>
+                            <Button href={`../editHangouts/${id}`}>Edit Hangouts</Button>
+                            </>
+                        : ""
+                }
+            </div>
         </div>
         </>
     )

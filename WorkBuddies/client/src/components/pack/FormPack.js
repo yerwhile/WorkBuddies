@@ -3,6 +3,7 @@ import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { useNavigate, Link, useParams } from "react-router-dom";
 import { login } from "../../modules/authManager";
 import { addPack } from "../../modules/packManager";
+import { addBuddyPack } from "../../modules/buddyManager";
 
 export default function FormPack() {
   const navigate = useNavigate();
@@ -20,17 +21,26 @@ export default function FormPack() {
 
   const formPackSubmit = (e) => {
     e.preventDefault();
+
     const pack = {
         name,
         description,
         schedule,
-        image,
-        founderId
+        image
     }
 
-    addPack(pack).then((packData) => {navigate(`/pack/packDetails/${packData.id}`)})
+    addPack(pack).then((packData) => {
+      const buddyPack = {
+        buddyId: id,
+        packId: packData.id
+      }
+      return buddyPack
+      })
+      .then((bP) => {
+        return addBuddyPack(bP).then(navigate(`/pack/packDetails/${bP.packId}`))
+      })
   };
-
+  
   return (
     <>
     <h2>Form a Pack</h2>

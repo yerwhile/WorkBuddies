@@ -123,6 +123,19 @@ namespace WorkBuddies.Controllers
 
         }
 
+        [HttpGet("packHangout/{id}")]
+        public IActionResult GetPackHangoutById(int id)
+        {
+
+            var packHangout = _packRepository.GetPackHangoutById(id);
+            if (packHangout == null)
+            {
+                return NotFound();
+            }
+            return Ok(packHangout);
+
+        }
+
         [HttpPost("addVibeToPack/{packId}")]
         public IActionResult AddVibesToPack(PackVibe packVibe, int packId)
         {
@@ -135,6 +148,25 @@ namespace WorkBuddies.Controllers
                     nameof(GetPackVibeById),
                     new { packVibe.Id },
                     packVibe);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost("addHangoutToPack/{packId}")]
+        public IActionResult AddHangoutsToPack(PackHangout packHangout, int packId)
+        {
+            try
+            {
+                _packRepository.DeleteHangoutsOnPack(packId);
+                packHangout.PackId = packId;
+                _packRepository.AddPackHangouts(packHangout);
+                return CreatedAtAction(
+                    nameof(GetPackHangoutById),
+                    new { packHangout.Id },
+                    packHangout);
             }
             catch
             {

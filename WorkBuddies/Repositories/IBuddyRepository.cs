@@ -10,6 +10,8 @@ namespace WorkBuddies.Repositories
         List<Buddy> GetBuddies();
         List<Buddy> GetBuddiesByState(string state);
         Buddy GetById(int id);
+        BuddyPack GetBuddyPackById(int id);
         void Update(Buddy buddy);
+        void AddBuddyPack(BuddyPack buddyPack);
     }
 }
