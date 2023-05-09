@@ -5,7 +5,7 @@ import { Button } from "reactstrap";
 import { addBuddyPack, deleteBuddyPack, getUserBuddyPackByPackId } from "../../modules/buddyManager";
 import { useNavigate } from "react-router-dom";
 
-const FindPackResults = ({pack}) => {
+const FindByVibeResults = ({pack}) => {
     const navigate = useNavigate();
 
     const [buddyCount, setBuddyCount] = useState(0);
@@ -66,4 +66,4 @@ const FindPackResults = ({pack}) => {
             )
 }
 
-export default FindPackResults
+export default FindByVibeResults

@@ -93,7 +93,7 @@ export const getPackDetails = (id) => {
           return resp.json();
         } else {
           throw new Error(
-            "An unknown error occurred while trying to get pack details.",
+            "An unknown error occurred while trying to determine if buddy is a member of this pack.",
           );
         }
       });
@@ -103,6 +103,25 @@ export const getPackDetails = (id) => {
   export const getPacksByHangout = (hangout) => {
     return getToken().then((token) => {
         return fetch(`${_apiUrl}/searchByHangout?q=${hangout}`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }).then((resp) => {
+            if(resp.ok) {
+                return resp.json();
+            } else {
+                throw new Error(
+                    "An unknown error occurred while trying to get packs.",
+                );
+            }
+        });
+    });
+}
+
+export const getPacksByVibe = (vibeName) => {
+    return getToken().then((token) => {
+        return fetch(`${_apiUrl}/searchByVibe?q=${vibeName}`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,

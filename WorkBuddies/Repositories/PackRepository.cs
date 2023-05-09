@@ -156,6 +156,52 @@ namespace WorkBuddies.Repositories
             }
         }
 
+        public List<Pack> GetPacksByVibe(string vibeName)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT p.Id, p.[Name], p.[Description], p.Schedule, p.[Image], p.CreateDate, p.IsOpen,
+                                v.Id AS VibeId, v.[Name] AS VibeName
+                                FROM Pack p
+                            LEFT JOIN PackVibe pv ON pv.PackId = p.Id
+                            LEFT JOIN Vibe v ON v.Id = pv.VibeId
+                        WHERE v.[Name] LIKE @vibeName";
+
+                    DbUtils.AddParameter(cmd, "@vibeName", $"%{vibeName}%");
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        var packs = new List<Pack>();
+                        while (reader.Read())
+                        {
+
+                            var packId = reader.GetInt32(reader.GetOrdinal("Id"));
+                            var existingPack = packs.FirstOrDefault(p => p.Id == packId) ?? new Pack()
+                            {
+                                Id = DbUtils.GetInt(reader, "Id"),
+                                Name = DbUtils.GetString(reader, "Name"),
+                                Description = DbUtils.GetString(reader, "Description"),
+                                Schedule = DbUtils.GetString(reader, "Schedule"),
+                                Image = DbUtils.GetNullableString(reader, "Image"),
+                                CreateDate = DbUtils.GetDateTime(reader, "CreateDate"),
+                                IsOpen = DbUtils.GetBool(reader, "IsOpen")
+                            };
+                            if (packs.FirstOrDefault(p => p.Id == packId) == null)
+                            {
+                                packs.Add(existingPack);
+                            }
+                        }
+                        return packs;
+                    }
+                }
+            }
+        }
+
         public List<Pack> GetPacksByState(string state)
         {
             using (var conn = Connection)

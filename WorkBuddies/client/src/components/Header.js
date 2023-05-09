@@ -35,6 +35,9 @@ export default function Header({ isLoggedIn, user }) {
                   <NavLink tag={RRNavLink} to="pack/findPack">Find a Pack</NavLink>
                 </NavItem>
                 <NavItem>
+                  <NavLink tag={RRNavLink} to="vibe/findByVibe">Find Your Vibe</NavLink>
+                </NavItem>
+                <NavItem>
                   <NavLink tag={RRNavLink} to={`buddy/profile/${user?.id}`}>My Profile</NavLink>
                 </NavItem>
               </>

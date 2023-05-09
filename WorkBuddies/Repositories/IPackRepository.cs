@@ -11,6 +11,7 @@ namespace WorkBuddies.Repositories
         List<Pack> GetPacksByHangout(string hangout);
         List<Pack> GetPacksByCity(string city);
         List<Pack> GetPacksByCompany(string company);
+        List<Pack> GetPacksByVibe(string vibeName);
         Pack GetPackById(int id);
         PackVibe GetPackVibeById(int id);
         PackHangout GetPackHangoutById(int id);

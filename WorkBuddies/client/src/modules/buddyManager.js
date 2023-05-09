@@ -81,3 +81,62 @@ export const addBuddyPack = (buddyPack) => {
       });
     });
   }
+
+  export const deleteBuddyPack = (buddyPackId) => {
+    return getToken().then(token => {
+        return fetch(`${_apiUrl}/deleteBuddyPack/${buddyPackId}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+    })
+}
+
+  export const getUserBuddyPackByPackId = (packId) => {
+  
+    return getToken().then(token => {
+      return fetch(`${_apiUrl}/getBuddyPackByPack/${packId}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }).then((resp) => {
+        if (resp.ok) {
+          return resp.json();
+        } else {
+          throw new Error(
+            "An unknown error occurred while trying to get associated Buddy Pack for this Pack and User.",
+          );
+        }
+      });
+    });
+  }
+
+
+  export const updateBuddy = (buddyObj) => {
+    return getToken().then(token => {
+        return fetch(`${_apiUrl}/editProfile/${buddyObj.id}`, {
+            method: "PUT",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              id: buddyObj.id,
+              firstName: buddyObj.firstName,
+              lastName: buddyObj.lastName,
+              city: buddyObj.city,
+              state: buddyObj.state,
+              about: buddyObj.about,
+              gender: buddyObj.gender,
+              age: buddyObj.age,
+              companyName: buddyObj.companyName,
+              companyIndustry: buddyObj.companyIndustry,
+              companyRole: buddyObj.companyRole,
+              email: buddyObj.email,
+              image: buddyObj.image
+          })
+        })
+    })
+}
