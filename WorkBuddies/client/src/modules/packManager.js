@@ -93,7 +93,7 @@ export const getPackDetails = (id) => {
           return resp.json();
         } else {
           throw new Error(
-            "An unknown error occurred while trying to get pack details.",
+            "An unknown error occurred while trying to determine if buddy is a member of this pack.",
           );
         }
       });

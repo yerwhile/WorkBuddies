@@ -1,27 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import { useNavigate, Link, useParams } from "react-router-dom";
-import { login } from "../../modules/authManager";
+import { useNavigate } from "react-router-dom";
 import { addPack } from "../../modules/packManager";
-import { addBuddyPack } from "../../modules/buddyManager";
 
 export default function FormPack() {
   const navigate = useNavigate();
-  const {id} = useParams();
 
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [schedule, setSchedule] = useState("");
-  const [image, setImage] = useState("");
-  const [founderId, setFounderId] = useState(null);
+  const [name, setName] = useState();
+  const [description, setDescription] = useState();
+  const [schedule, setSchedule] = useState();
+  const [image, setImage] = useState();
 
-  useEffect(() => {
-    setFounderId(id);
-  }, [])
 
   const formPackSubmit = (e) => {
     e.preventDefault();
-
     const pack = {
         name,
         description,
@@ -29,18 +21,9 @@ export default function FormPack() {
         image
     }
 
-    addPack(pack).then((packData) => {
-      const buddyPack = {
-        buddyId: id,
-        packId: packData.id
-      }
-      return buddyPack
-      })
-      .then((bP) => {
-        return addBuddyPack(bP).then(navigate(`/pack/packDetails/${bP.packId}`))
-      })
+    addPack(pack).then((packData) => {navigate(`/pack/packDetails/${packData.id}`)})
   };
-  
+
   return (
     <>
     <h2>Form a Pack</h2>

@@ -4,25 +4,50 @@ import { getBuddyCount, getPackDetails, isBuddyMember } from "../../modules/pack
 import PackBuddies from "./PackBuddies";
 import PackHangouts from "./PackHangouts";
 import { Button } from "reactstrap";
+import { addBuddyPack, deleteBuddyPack, getUserBuddyPackByPackId } from "../../modules/buddyManager";
+import { me } from "../../modules/authManager";
 
 export default function PackDetails() {
     const navigate = useNavigate;
     let {id} = useParams();
     const [pack, setPack] = useState({});
+    const [currentUser, setCurrentUser] = useState({});
     const [isMember, setIsMember] = useState(false);
     const [buddyCount, setBuddyCount] = useState(0);
     
     useEffect(() => {
         getPackDetails(id).then(setPack);
+        me().then(setCurrentUser);
     }, [])
 
     useEffect(() => {
         isBuddyMember(id).then(setIsMember);
+        
     }, [pack])
 
     useEffect(() => {
         getBuddyCount(id).then(setBuddyCount);
     }, [isMember])
+
+    const handleLeaveButton = () => {
+        return <Button onClick={() => 
+            getUserBuddyPackByPackId(pack.id)
+                .then((buddyPack) => {
+                    deleteBuddyPack(buddyPack.id)
+                }) 
+            } href={`../../buddy/profile/${currentUser.id}`}>Leave Pack</Button>
+    }
+
+    const handleJoinButton = () => {
+        return <Button onClick={() => {
+                const buddyPack = {
+                    buddyId: currentUser.id,
+                    packId: pack.id
+                }
+                addBuddyPack(buddyPack)
+        }}
+        href={`../../buddy/profile/${currentUser.id}`}>Join Pack</Button>
+    }
 
     return(
         <>
@@ -33,9 +58,21 @@ export default function PackDetails() {
             <div className="pack_profile__schedule">{pack.schedule}</div>
             <div className="pack_profile__open">
                 {
-                    pack.isOpen == true
+                    pack.isOpen === true
                         ? "Pack is OPEN to new buddies"
                         : "Pack is CLOSED to new buddies"
+                    
+                }
+                {
+                    isMember === true
+                        ? handleLeaveButton()
+                        : ""
+                    
+                }
+                {
+                    isMember === false && pack.isOpen
+                        ? handleJoinButton()
+                        : ""
                     
                 }
             </div>

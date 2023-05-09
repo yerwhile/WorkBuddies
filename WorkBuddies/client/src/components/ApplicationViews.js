@@ -10,6 +10,7 @@ import AddVibeForm from "./pack/AddVibeForm";
 import CreateVibe from "./vibe/CreateVibe";
 import AddHangoutForm from "./pack/AddHangoutForm";
 import CreateHangout from "./hangout/CreateHangout";
+import EditProfile from "./profile/EditProfile";
 
 export default function ApplicationViews({ isLoggedIn, user }) {
 
@@ -26,6 +27,7 @@ export default function ApplicationViews({ isLoggedIn, user }) {
           <Route path="register" element={<Register />} />
           <Route path="buddy">
               <Route path="profile/:id" element={<Profile user={user}/>}/>
+              <Route path="editProfile/:id" element={<EditProfile />} />
           </Route>
           <Route path="pack">
               <Route path="formPack/:id" element={<FormPack />} />
