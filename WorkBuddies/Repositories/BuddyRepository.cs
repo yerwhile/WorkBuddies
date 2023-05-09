@@ -329,6 +329,23 @@ namespace WorkBuddies.Repositories
             }
         }
 
+
+        public void DeleteBuddyPack(int buddyPackId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"DELETE FROM BuddyPack
+                                        WHERE Id = @buddyPackId";
+
+                    DbUtils.AddParameter(cmd, "@buddyPackId", buddyPackId);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
         public void Update(Buddy buddy)
         {
             using (var conn = Connection)
@@ -337,7 +354,7 @@ namespace WorkBuddies.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"UPDATE Buddy
-                                        SET FirebaseUserId = @firebaseUserId,
+                                        SET 
                                             FirstName = @firstName,
                                             LastName = @lastName,
                                             Email = @email,
@@ -355,6 +372,8 @@ namespace WorkBuddies.Repositories
                     DbUtils.AddParameter(cmd, "@lastName", buddy.LastName);
                     DbUtils.AddParameter(cmd, "@email", buddy.Email);
                     DbUtils.AddParameter(cmd, "@image", buddy.Image);
+                    DbUtils.AddParameter(cmd, "@city", buddy.City);
+                    DbUtils.AddParameter(cmd, "@state", buddy.State);
                     DbUtils.AddParameter(cmd, "@about", buddy.About);
                     DbUtils.AddParameter(cmd, "@gender", buddy.Gender);
                     DbUtils.AddParameter(cmd, "@age", buddy.Age);
@@ -364,6 +383,42 @@ namespace WorkBuddies.Repositories
                     DbUtils.AddParameter(cmd, "@id", buddy.Id);
 
                     cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public BuddyPack FindBuddyPackByPack(int buddyId, int packId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT bp.Id, bp.PackId, bp.BuddyId
+                          FROM BuddyPack bp
+                          JOIN Pack p on p.Id = bp.PackId
+                          JOIN Buddy b on b.Id = bp.BuddyId
+                        WHERE p.Id = @packId AND b.Id = @buddyId";
+
+                    DbUtils.AddParameter(cmd, "@buddyId", buddyId);
+                    DbUtils.AddParameter(cmd, "@packId", packId);
+
+                    BuddyPack buddyPack = null;
+
+                    var reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        buddyPack = new BuddyPack()
+                        {
+                            Id = DbUtils.GetInt(reader, "Id"),
+                            PackId = DbUtils.GetInt(reader, "PackId"),
+                            BuddyId = DbUtils.GetInt(reader, "BuddyId")
+                        };
+                    }
+                    reader.Close();
+
+                    return buddyPack;
                 }
             }
         }

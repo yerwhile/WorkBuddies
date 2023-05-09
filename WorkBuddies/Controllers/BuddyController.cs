@@ -77,6 +77,18 @@ namespace WorkBuddies.Controllers
             return Ok(buddyPack);
         }
 
+        [HttpGet("getBuddyPackByPack/{packId}")]
+        public IActionResult GetBuddyPackByPack(int packId)
+        {
+            var currentBuddy = GetCurrentBuddy();
+            var buddyPack = _buddyRepository.FindBuddyPackByPack(currentBuddy.Id, packId);
+            if(buddyPack == null)
+            {
+                return NotFound();
+            }
+            return Ok(buddyPack);
+        }
+
         [HttpPost]
         public IActionResult Post(Buddy buddy)
         {
@@ -97,7 +109,7 @@ namespace WorkBuddies.Controllers
                 buddyPack);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("editProfile/{id}")]
         public IActionResult Edit(int id, Buddy buddy)
         {
             if (id != buddy.Id)
@@ -108,6 +120,20 @@ namespace WorkBuddies.Controllers
             _buddyRepository.Update(buddy);
             return NoContent();
 
+        }
+
+        [HttpDelete("deleteBuddyPack/{buddyPackId}")]
+        public IActionResult DeleteBuddyPack(int buddyPackId)
+        { 
+            try
+            {
+                _buddyRepository.DeleteBuddyPack(buddyPackId);
+                return NoContent();
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
 
         private Buddy GetCurrentBuddy()

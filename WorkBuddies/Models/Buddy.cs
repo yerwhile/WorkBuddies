@@ -28,8 +28,6 @@ namespace WorkBuddies.Models
         public string? CompanyName { get; set; }
         public string? CompanyIndustry { get; set; }
         public string? CompanyRole { get; set; }
-
-        [Required]
         public string FirebaseUserId { get; set; }
         public List<Pack> Packs { get; set; }
         public List<Hangout> Hangouts { get; set; }
