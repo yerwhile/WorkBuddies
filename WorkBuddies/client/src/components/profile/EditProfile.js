@@ -2,44 +2,29 @@ import React, { useEffect, useState } from "react";
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { useNavigate, Link, useParams } from "react-router-dom";
 import { updateBuddy } from "../../modules/buddyManager";
+import { me } from "../../modules/authManager";
 
 export default function EditProfile() {
   const navigate = useNavigate();
-  const {id} = useParams();
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [image, setImage] = useState("");
-  const [about, setAbout] = useState("");
-  const [gender, setGender] = useState("");
-  const [age, setAge] = useState(null);
-  const [companyName, setCompanyName] = useState("");
-  const [companyIndustry, setCompanyIndustry] = useState("");
-  const [companyRole, setCompanyRole] = useState("");
-  const [email, setEmail] = useState("");
+  const [currentUser, setCurrentUser] = useState(false);
+
+    
+  useEffect(() => {
+      me().then(setCurrentUser);
+  }, [])
+
+  const handleInputChange = (evt) => {
+    const value = evt.target.value;
+    const key = evt.target.id;
+    const userCopy = { ...currentUser };
+    userCopy[key] = value;
+    setCurrentUser(userCopy);
+};
 
   const editProfileSubmit = (e) => {
     e.preventDefault();
-
-    const buddy = {
-        id: parseInt(id),
-        firstName,
-        lastName,
-        city,
-        state,
-        image,
-        about,
-        gender,
-        age,
-        companyName,
-        companyIndustry,
-        companyRole,
-        email
-    }
-
-    updateBuddy(buddy).then(navigate(`/`))
+    updateBuddy(currentUser).then(navigate(`/`))
   };
   
   return (
@@ -52,8 +37,10 @@ export default function EditProfile() {
           <Input
             id="firstName"
             type="text"
+            placeholder={currentUser.firstName}
+            value={currentUser.firstName}
             autoFocus
-            onChange={(e) => setFirstName(e.target.value)}
+            onChange={handleInputChange}
           />
         </FormGroup>
         <FormGroup>
@@ -61,7 +48,9 @@ export default function EditProfile() {
           <Input
             id="lastName"
             type="text"
-            onChange={(e) => setLastName(e.target.value)}
+            placeholder={currentUser.lastName}
+            value={currentUser.lastName}
+            onChange={handleInputChange}
           />
         </FormGroup>
         <FormGroup>
@@ -69,7 +58,9 @@ export default function EditProfile() {
           <Input
             id="City"
             type="text"
-            onChange={(e) => setCity(e.target.value)}
+            placeholder={currentUser.city}
+            value={currentUser.city}
+            onChange={handleInputChange}
           />
         </FormGroup>
         <FormGroup>
@@ -77,7 +68,9 @@ export default function EditProfile() {
           <Input
             id="state"
             type="text"
-            onChange={(e) => setState(e.target.value)}
+            placeholder={currentUser.state}
+            value={currentUser.state}
+            onChange={handleInputChange}
           />
         </FormGroup>
         <FormGroup>
@@ -85,7 +78,9 @@ export default function EditProfile() {
           <Input
             id="image"
             type="text"
-            onChange={(e) => setImage(e.target.value)}
+            placeholder={currentUser.image}
+            value={currentUser.image}
+            onChange={handleInputChange}
           />
         </FormGroup>
         <FormGroup>
@@ -93,7 +88,9 @@ export default function EditProfile() {
           <Input
             id="about"
             type="text"
-            onChange={(e) => setAbout(e.target.value)}
+            placeholder={currentUser.about}
+            value={currentUser.about}
+            onChange={handleInputChange}
           />
         </FormGroup>
         <FormGroup>
@@ -101,7 +98,9 @@ export default function EditProfile() {
           <Input
             id="age"
             type="number"
-            onChange={(e) => setAge(e.target.value)}
+            placeholder={currentUser.age}
+            value={currentUser.age}
+            onChange={handleInputChange}
           />
         </FormGroup>
         <FormGroup>
@@ -109,7 +108,9 @@ export default function EditProfile() {
           <Input
             id="gender"
             type="text"
-            onChange={(e) => setGender(e.target.value)}
+            placeholder={currentUser.gender}
+            value={currentUser.gender}
+            onChange={handleInputChange}
           />
         </FormGroup>
         <FormGroup>
@@ -117,7 +118,9 @@ export default function EditProfile() {
           <Input
             id="companyName"
             type="text"
-            onChange={(e) => setCompanyName(e.target.value)}
+            placeholder={currentUser.companyName}
+            value={currentUser.companyName}
+            onChange={handleInputChange}
           />
         </FormGroup>
         <FormGroup>
@@ -125,7 +128,9 @@ export default function EditProfile() {
           <Input
             id="companyIndustry"
             type="text"
-            onChange={(e) => setCompanyIndustry(e.target.value)}
+            placeholder={currentUser.companyIndustry}
+            value={currentUser.companyIndustry}
+            onChange={handleInputChange}
           />
         </FormGroup>
         <FormGroup>
@@ -133,7 +138,9 @@ export default function EditProfile() {
           <Input
             id="companyRole"
             type="text"
-            onChange={(e) => setCompanyRole(e.target.value)}
+            placeholder={currentUser.companyRole}
+            value={currentUser.companyRole}
+            onChange={handleInputChange}
           />
         </FormGroup>
         <FormGroup>
@@ -141,7 +148,9 @@ export default function EditProfile() {
           <Input
             id="email"
             type="text"
-            onChange={(e) => setEmail(e.target.value)}
+            placeholder={currentUser.email}
+            value={currentUser.email}
+            onChange={handleInputChange}
           />
         </FormGroup>
         <FormGroup>

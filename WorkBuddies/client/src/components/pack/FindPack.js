@@ -124,6 +124,7 @@ const FindPack = ({user}) => {
                         <th>Name</th>
                         <th>Formed</th>
                         <th>Buddy#</th>
+                        <th>Details</th>
                         <th>Join/Leave?</th>
                     </tr>
                 </thead>

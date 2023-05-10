@@ -3,7 +3,7 @@ import { getBuddyCount, isBuddyMember } from "../../modules/packManager";
 import { me } from "../../modules/authManager";
 import { Button } from "reactstrap";
 import { addBuddyPack, deleteBuddyPack, getUserBuddyPackByPackId } from "../../modules/buddyManager";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const FindPackResults = ({pack}) => {
     const navigate = useNavigate();
@@ -48,6 +48,7 @@ const FindPackResults = ({pack}) => {
                 <td>{pack.name}</td>
                 <td>{pack.createDate}</td>
                 <td>{buddyCount}</td>
+                <td><Link to={`../../pack/packDetails/${pack.id}`}>See Details</Link></td>
                 <td>
                 {
                     isMember === true

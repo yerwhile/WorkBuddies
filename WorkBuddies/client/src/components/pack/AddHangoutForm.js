@@ -5,6 +5,7 @@ import { getAllVibes, getVibeIdsByPack } from "../../modules/vibeManager";
 import { addHangoutToPack, addVibeToPack, getPackDetails } from "../../modules/packManager";
 import { getBuddyProfile } from "../../modules/buddyManager";
 import { getHangoutIdsByPack, getHangoutsByState } from "../../modules/hangoutManager";
+import { me } from "../../modules/authManager";
 
 export const AddHangoutForm = () => {
 
@@ -17,7 +18,7 @@ export const AddHangoutForm = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    getBuddyProfile(id).then(setCurrentBuddy)
+    me().then(setCurrentBuddy)
   }, [])
 
 
@@ -55,14 +56,15 @@ export const AddHangoutForm = () => {
       <h2>Add or remove existing hangouts from {pack?.name}</h2>
       <Form>
         {hangouts.map((hangout) => {
+          const alreadyChecked = packHangouts.includes(hangout.id)
           return (
             <FormGroup check key={hangout.id}>
               <Input
                 type="checkbox"
                 id={hangout.id}
                 name={hangout.name}
-                value={hangout.id}
-                checked={packHangouts.find(packHangoutId => packHangoutId === hangout.id ? true : false)}
+                value={hangout.id ? hangout.id : 0}
+                checked={alreadyChecked}
                 onChange={(event) => handleChange(event)}
               />
               <Label>{hangout.name}</Label>

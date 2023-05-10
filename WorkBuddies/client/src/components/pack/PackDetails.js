@@ -8,8 +8,10 @@ import { addBuddyPack, deleteBuddyPack, getUserBuddyPackByPackId } from "../../m
 import { me } from "../../modules/authManager";
 
 export default function PackDetails() {
-    const navigate = useNavigate;
+    const navigate = useNavigate();
+
     let {id} = useParams();
+    
     const [pack, setPack] = useState({});
     const [currentUser, setCurrentUser] = useState({});
     const [isMember, setIsMember] = useState(false);
@@ -34,8 +36,11 @@ export default function PackDetails() {
             getUserBuddyPackByPackId(pack.id)
                 .then((buddyPack) => {
                     deleteBuddyPack(buddyPack.id)
+                    .then(() => {
+                        navigate(`/../../buddy/profile/${currentUser.id}`)
+                    })
                 }) 
-            } href={`../../buddy/profile/${currentUser.id}`}>Leave Pack</Button>
+            } >Leave Pack</Button>
     }
 
     const handleJoinButton = () => {
@@ -45,8 +50,11 @@ export default function PackDetails() {
                     packId: pack.id
                 }
                 addBuddyPack(buddyPack)
+                    .then(() => {
+                        navigate(`/../../buddy/profile/${currentUser.id}`)
+                    })
         }}
-        href={`../../buddy/profile/${currentUser.id}`}>Join Pack</Button>
+        >Join Pack</Button>
     }
 
     return(
@@ -56,6 +64,15 @@ export default function PackDetails() {
                 <img src={pack.image} />
             </div>
             <div className="pack_profile__schedule">{pack.schedule}</div>
+            <div className="pack_profie__edit">
+            {
+                    isMember
+                        ? <Button href={`../editPack/${id}`}>Edit Pack</Button>
+                        : ""
+                    
+                }
+            </div>
+                
             <div className="pack_profile__open">
                 {
                     pack.isOpen === true

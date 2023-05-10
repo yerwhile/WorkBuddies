@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { addPack } from "../../modules/packManager";
+import { addBuddyPack } from "../../modules/buddyManager";
 
 export default function FormPack() {
   const navigate = useNavigate();
+  const {id} = useParams();
 
   const [name, setName] = useState();
   const [description, setDescription] = useState();
@@ -21,7 +23,16 @@ export default function FormPack() {
         image
     }
 
-    addPack(pack).then((packData) => {navigate(`/pack/packDetails/${packData.id}`)})
+    addPack(pack).then((packData) => {
+      const buddyPack = {
+        packId: packData.id,
+        buddyId: id
+      }
+      return buddyPack
+    }).then((bP) => {
+      addBuddyPack(bP)
+        .then(navigate(`/pack/packDetails/${bP.packId}`))
+    })
   };
 
   return (
