@@ -28,7 +28,7 @@ export default function Register() {
         image,
         email
       };
-      register(buddy, password)/*.then(() => navigate("/"))*/;
+      register(buddy, password).then(() => navigate("/"));
     }
   };
 
