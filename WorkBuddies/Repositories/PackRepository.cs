@@ -587,7 +587,7 @@ namespace WorkBuddies.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"UPDATE Buddy
+                    cmd.CommandText = @"UPDATE Pack
                                         SET Name = @Name,
                                             Description = @Description,
                                             Schedule = @Schedule,

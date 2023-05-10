@@ -198,14 +198,23 @@ export const getPacksByCompany = (company) => {
     });
   }
 
-  export const editPack = (id) => {
+  export const updatePack = (packObj) => {
     return getToken().then(token => {
-        return fetch(`${_apiUrl}/${id}`, {
+        return fetch(`${_apiUrl}/${packObj.id}`, {
             method: "PUT",
             headers: {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json"
-            }
+            },
+            body: JSON.stringify({
+              id: packObj.id,
+              name: packObj.name,
+              description: packObj.description,
+              schedule: packObj.schedule,
+              createDate: packObj.createDate,
+              image: packObj.image,
+              isOpen: packObj.isOpen
+          })
         })
     })
 }

@@ -45,7 +45,7 @@ namespace WorkBuddies.Repositories
                             Image = DbUtils.GetString(reader, "Image"),
                             About = DbUtils.GetString(reader, "About"),
                             Gender = DbUtils.GetString(reader, "Gender"),
-                            Age = DbUtils.GetInt(reader, "Age"),
+                            Age = DbUtils.GetNullableInt(reader, "Age"),
                             CompanyName = DbUtils.GetString(reader, "CompanyName"),
                             CompanyIndustry = DbUtils.GetString(reader, "CompanyIndustry"),
                             CompanyRole = DbUtils.GetString(reader, "CompanyRole")
@@ -100,7 +100,7 @@ namespace WorkBuddies.Repositories
                                 Image = DbUtils.GetString(reader, "Image"),
                                 About = DbUtils.GetString(reader, "About"),
                                 Gender = DbUtils.GetString(reader, "Gender"),
-                                Age = DbUtils.GetInt(reader, "Age"),
+                                Age = DbUtils.GetNullableInt(reader, "Age"),
                                 CompanyName = DbUtils.GetString(reader, "CompanyName"),
                                 CompanyIndustry = DbUtils.GetString(reader, "CompanyIndustry"),
                                 CompanyRole = DbUtils.GetString(reader, "CompanyRole"),
