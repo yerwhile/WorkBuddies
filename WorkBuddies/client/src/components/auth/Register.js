@@ -8,6 +8,8 @@ export default function Register() {
 
   const [firstName, setFirstName] = useState();
   const [lastName, setLastName] = useState();
+  const [city, setCity] = useState();
+  const [state, setState] = useState();
   const [email, setEmail] = useState();
   const [image, setImage] = useState();
   const [password, setPassword] = useState();
@@ -18,13 +20,15 @@ export default function Register() {
     if (password && password !== confirmPassword) {
       alert("Passwords don't match. Do better.");
     } else {
-      const userProfile = {
+      const buddy = {
         firstName,
         lastName,
+        city,
+        state,
         image,
-        email,
+        email
       };
-      register(userProfile, password).then(() => navigate("/"));
+      register(buddy, password).then(() => navigate("/"));
     }
   };
 
@@ -45,6 +49,23 @@ export default function Register() {
             id="lastName"
             type="text"
             onChange={(e) => setLastName(e.target.value)}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="city">City</Label>
+          <Input
+            id="city"
+            type="text"
+            onChange={(e) => setCity(e.target.value)}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="state">State</Label>
+          <Input
+            id="state"
+            type="text"
+            maxLength={2}
+            onChange={(e) => setState(e.target.value)}
           />
         </FormGroup>
         <FormGroup>
