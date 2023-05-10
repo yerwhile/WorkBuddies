@@ -45,17 +45,18 @@ export const AddVibeForm = () => {
   
   return (
     <div className="container">
-      <h2>Add or remove existing vibes from {pack?.name}</h2>
+      <h2>Add or remove existing vibes from {pack.name}</h2>
       <Form>
         {vibes.map((vibe) => {
+          const alreadyChecked = packVibes.includes(vibe.id)
           return (
-            <FormGroup check>
+            <FormGroup check key={vibe.id}>
               <Input
                 type="checkbox"
                 id={vibe.id}
                 name={vibe.name}
                 value={vibe.id}
-                checked={packVibes.find(packVibeId => packVibeId === vibe.id ? true : false)}
+                checked={alreadyChecked}
                 onChange={(event) => handleChange(event)}
               />
               <Label>{vibe.name}</Label>
