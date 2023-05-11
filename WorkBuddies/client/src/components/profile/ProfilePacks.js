@@ -16,7 +16,7 @@ const ProfilePacks = ({pack}) => {
             <td>{pack.name}</td>
             <td>{pack.createDate}</td>
             <td>{buddyCount}</td>
-            <td><Link to={`../../pack/packDetails/${pack.id}`}>See Details</Link></td>
+            <td><Button color="info" href={`../../pack/packDetails/${pack.id}`}>See Details</Button></td>
         </tr>
     ) 
 }

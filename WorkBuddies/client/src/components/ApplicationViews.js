@@ -41,7 +41,7 @@ export default function ApplicationViews({ isLoggedIn, user }) {
           </Route>
           <Route path="vibe">
               <Route path="createVibe/:id" element={<CreateVibe />} />
-              <Route path="findByVibe" element={<FindByVibe />} />
+              <Route path="findByVibe" element={<FindByVibe user={user} />} />
           </Route>
           <Route path="hangout">
             <Route path="createHangout/:id" element={<CreateHangout />} />

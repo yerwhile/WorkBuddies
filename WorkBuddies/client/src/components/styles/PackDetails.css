@@ -1,0 +1,33 @@
+.pack_profile {
+    display: flex;
+    justify-content: space-around;
+}
+
+.pack_profile__left, .pack_profile__right {
+    display:flex;
+    flex-direction: column;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.pack_profile__info {
+    margin-top: 20px;
+}
+
+.pack_profile__image {
+    margin-top: 20px;
+    height: 280px;
+}
+
+.pack_profile__buttons {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.pack_profile__edit {
+    margin-right: 10px;
+}
+
+.pack_vibes {
+    margin-top: 20px;
+}

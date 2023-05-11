@@ -19,7 +19,7 @@ const FindByVibeResults = ({pack}) => {
     }, [])
 
     const handleLeaveButton = () => {
-        return <Button onClick={() => 
+        return <Button color="warning" onClick={() => 
             getUserBuddyPackByPackId(pack.id)
                 .then((buddyPack) => {
                     deleteBuddyPack(buddyPack.id)
@@ -31,7 +31,7 @@ const FindByVibeResults = ({pack}) => {
     }
 
     const handleJoinButton = () => {
-        return <Button onClick={() => {
+        return <Button color="success" onClick={() => {
                 const buddyPack = {
                     buddyId: currentUser.id,
                     packId: pack.id
@@ -56,7 +56,7 @@ const FindByVibeResults = ({pack}) => {
                 <td>{pack.name}</td>
                 <td>{toShortDate(pack.createDate)}</td>
                 <td>{buddyCount}</td>
-                <td><Link to={`../../pack/packDetails/${pack.id}`}>See Details</Link></td>
+                <td><Button color="info" to={`../../pack/packDetails/${pack.id}`}>See Details</Button></td>
                 <td>
                 {
                     isMember === true
@@ -69,6 +69,11 @@ const FindByVibeResults = ({pack}) => {
                         ? handleJoinButton()
                         : ""
                     
+                }
+                {
+                    isMember === false && !pack.isOpen
+                        ? "Pack Closed"
+                        : ""
                 }
                 </td>
             </tr>

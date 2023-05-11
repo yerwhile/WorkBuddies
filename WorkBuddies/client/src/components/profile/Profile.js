@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { getBuddyProfile } from "../../modules/buddyManager";
-import { getBuddyCount, isBuddyMember } from "../../modules/packManager";
 import ProfilePacks from "./ProfilePacks";
 import ProfileHangouts from "./ProfileHangouts";
-import { Button, ListGroup, ListGroupItem, Table } from "reactstrap";
-import "../styles/profile.css"
+import { Button, Table } from "reactstrap";
+import "../styles/Profile.css"
 
 const Profile = ({user}) => {
-    const navigate = useNavigate;
     const {id} = useParams();
 
     const [buddy, setBuddy] = useState({});   
@@ -25,6 +23,7 @@ const Profile = ({user}) => {
             <div className="buddy_profile__image">
                 <img className="profileImage" src={buddy.image} />
             </div>
+            <div className="buddy_profile__about">{buddy.about}</div>
             <div className="buddy_profile__info">
                 <Table>
                     <thead>
@@ -65,7 +64,7 @@ const Profile = ({user}) => {
         <div className="buddy_profile__editButton">
             {
                 user?.id == id
-                    ? <Button href={`../editProfile/${id}`}>Edit Profile</Button>
+                    ? <Button color="secondary" href={`../editProfile/${id}`}>Edit Profile</Button>
                     : ""
                 
             }
