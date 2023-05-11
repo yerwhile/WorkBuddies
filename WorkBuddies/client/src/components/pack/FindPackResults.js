@@ -4,6 +4,7 @@ import { me } from "../../modules/authManager";
 import { Button } from "reactstrap";
 import { addBuddyPack, deleteBuddyPack, getUserBuddyPackByPackId } from "../../modules/buddyManager";
 import { Link, useNavigate } from "react-router-dom";
+import "../styles/FindPack.css"
 
 const FindPackResults = ({pack}) => {
     const navigate = useNavigate();
@@ -19,7 +20,7 @@ const FindPackResults = ({pack}) => {
     }, [])
 
     const handleLeaveButton = () => {
-        return <Button onClick={() => 
+        return <Button color="warning" onClick={() => 
             getUserBuddyPackByPackId(pack.id)
                 .then((buddyPack) => {
                     deleteBuddyPack(buddyPack.id)
@@ -31,7 +32,7 @@ const FindPackResults = ({pack}) => {
     }
 
     const handleJoinButton = () => {
-        return <Button onClick={() => {
+        return <Button color="success" onClick={() => {
                 const buddyPack = {
                     buddyId: currentUser.id,
                     packId: pack.id
@@ -44,11 +45,19 @@ const FindPackResults = ({pack}) => {
         >Join Pack</Button>
     }
 
+    const toShortDate = (dateTime) => {
+        const year = dateTime.slice(0, 4)
+        const month = dateTime.slice(5, 7)
+        const day = dateTime.slice(8, 10)
+        const shortDate = `${month}/${day}/${year}`
+        return shortDate
+    }
+
     return (<tr>
                 <td>{pack.name}</td>
-                <td>{pack.createDate}</td>
+                <td>{toShortDate(pack.createDate)}</td>
                 <td>{buddyCount}</td>
-                <td><Link to={`../../pack/packDetails/${pack.id}`}>See Details</Link></td>
+                <td><Button className="btn-info" href={`../../pack/packDetails/${pack.id}`}>See Details</Button></td>
                 <td>
                 {
                     isMember === true

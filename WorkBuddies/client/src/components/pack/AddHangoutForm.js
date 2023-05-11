@@ -52,32 +52,41 @@ export const AddHangoutForm = () => {
   }
   
   return (
-    <div className="container">
+    <div className="form">
       <h2>Add or remove existing hangouts from {pack?.name}</h2>
-      <Form>
-        {hangouts.map((hangout) => {
-          const alreadyChecked = packHangouts.includes(hangout.id)
-          return (
-            <FormGroup check key={hangout.id}>
-              <Input
-                type="checkbox"
-                id={hangout.id}
-                name={hangout.name}
-                value={hangout.id ? hangout.id : 0}
-                checked={alreadyChecked}
-                onChange={(event) => handleChange(event)}
-              />
-              <Label>{hangout.name}</Label>
-            </FormGroup>
-          );
-        })}
-        <Button className="btn btn-primary" onClick={(event) => handleSave(event)}>
-          Update
-        </Button>
-        <Button className="btn btn-danger" href={`/pack/packDetails/${id}`}>
-          Cancel
-        </Button>
-      </Form>
+      <div className="form_checkboxes">
+        <Form>
+          {hangouts.map((hangout) => {
+            const alreadyChecked = packHangouts.includes(hangout.id)
+            return (
+              <FormGroup check key={hangout.id}>
+                <Input
+                  type="checkbox"
+                  id={hangout.id}
+                  name={hangout.name}
+                  value={hangout.id ? hangout.id : 0}
+                  checked={alreadyChecked}
+                  onChange={(event) => handleChange(event)}
+                />
+                <Label>{hangout.name}</Label>
+              </FormGroup>
+            );
+          })}
+          <div className="addVibe_buttons">
+            <div className="addVibe_update">
+              <Button color="success" onClick={(event) => handleSave(event)}>
+                Update
+              </Button>
+            </div>
+            <div className="addVibe_cancel">
+              <Button color="danger" href={`/pack/packDetails/${id}`}>
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </Form>
+      </div>
+      
       <h5>Can't find the hangout you want to add? <Link to={`../../hangout/createHangout/${id}`}>Create a new hangout!</Link></h5>
     </div>
   );

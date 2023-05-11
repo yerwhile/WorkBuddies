@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
 import { getAllVibes, getVibeIdsByPack } from "../../modules/vibeManager";
 import { addVibeToPack, getPackDetails } from "../../modules/packManager";
+import "../styles/Form.css"
 
 export const AddVibeForm = () => {
 
@@ -44,33 +45,41 @@ export const AddVibeForm = () => {
   }
   
   return (
-    <div className="container">
-      <h2>Add or remove existing vibes from {pack.name}</h2>
-      <Form>
-        {vibes.map((vibe) => {
-          const alreadyChecked = packVibes.includes(vibe.id)
-          return (
-            <FormGroup check key={vibe.id}>
-              <Input
-                type="checkbox"
-                id={vibe.id}
-                name={vibe.name}
-                value={vibe.id}
-                checked={alreadyChecked}
-                onChange={(event) => handleChange(event)}
-              />
-              <Label>{vibe.name}</Label>
-            </FormGroup>
-          );
-        })}
-        <Button className="btn btn-primary" onClick={(event) => handleSave(event)}>
-          Update
-        </Button>
-        <Button className="btn btn-danger" href={`/pack/packDetails/${id}`}>
-          Cancel
-        </Button>
-      </Form>
-      <h5>Can't find the vibe you want to add? <Link to={`../../vibe/createVibe/${id}`}>Create a new vibe!</Link></h5>
+    <div className="form">
+      <h2>Add or Remove Existing Vibes from {pack.name}</h2>
+      <div className="form_checkboxes">
+        <Form>
+          {vibes.map((vibe) => {
+            const alreadyChecked = packVibes.includes(vibe.id)
+            return (
+              <FormGroup check key={vibe.id}>
+                <Input
+                  type="checkbox"
+                  id={vibe.id}
+                  name={vibe.name}
+                  value={vibe.id}
+                  checked={alreadyChecked}
+                  onChange={(event) => handleChange(event)}
+                />
+                <Label>{vibe.name}</Label>
+              </FormGroup>
+            );
+          })}
+          <div className="addVibe_buttons">
+            <div className="addVibe_update">
+              <Button color="success" onClick={(event) => handleSave(event)}>
+                Update
+              </Button>
+            </div>
+            <div className="addVibe_cancel">
+              <Button color="danger" href={`/pack/packDetails/${id}`}>
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </Form>
+      </div>
+      <h5 className="addVibe_create">Can't find the vibe you want to add? <Link to={`../../vibe/createVibe/${id}`}>Create a new vibe!</Link></h5>
     </div>
   );
 };

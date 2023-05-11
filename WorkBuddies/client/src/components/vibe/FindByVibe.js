@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getPacksByState, getPacksByVibe} from "../../modules/packManager";
 import { getAllVibes } from "../../modules/vibeManager";
 import FindByVibeResults from "./FindByVibeResults";
+import { Table } from "reactstrap";
 
 const FindByVibe = ({user}) => {
     const [packs, setPacks] = useState([]);
@@ -24,44 +25,48 @@ const FindByVibe = ({user}) => {
         setFilteredPacks(vibePacks)
     }, [vibePacks])
 
+    
 
     return (
         <>
-        <h2>Find a Pack by Vibe in Your State: {user?.state}</h2>
-        <div className="findPack_selectFilters">
-            <label htmlFor="vibes">Filter by Vibes:</label>
-            <select name="vibes"
-                    id="vibes" 
-                    value={vibeChoice}
-                    onChange={(event) => {
-                        setVibeChoice(event.target.value)
-                    }}>
-                    <option value="">Choose a Vibe</option>
-                {
-                    vibes?.map((vibe) => {
-                        return <option key={vibe.id} value={vibe.name}>{vibe.name}</option>
-                    })
-                }
-            </select>
-        </div>
-        <div className="findPack_filterResults">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Formed</th>
-                        <th>Buddy#</th>
-                        <th>Details</th>
-                        <th>Join/Leave?</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {filteredPacks?.map((pack) => <FindByVibeResults key={pack.id} pack={pack} />
+        <div className="findPack">
+            <h2>Find a Pack by Vibe in Your State: {user?.state}</h2>
+            <div className="findPack_selectFilters">
+                <label htmlFor="vibes">Filter by Vibes:</label>
+                <select name="vibes"
+                        id="vibes" 
+                        value={vibeChoice}
+                        onChange={(event) => {
+                            setVibeChoice(event.target.value)
+                        }}>
+                        <option value="">Choose a Vibe</option>
+                    {
+                        vibes?.map((vibe) => {
+                            return <option key={vibe.id} value={vibe.name}>{vibe.name}</option>
+                        })
+                    }
+                </select>
+            </div>
+            <div className="findPack_filterResults">
+                <Table striped bordered>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Formed</th>
+                            <th>Buddy#</th>
+                            <th>Details</th>
+                            <th>Join/Leave?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {filteredPacks?.map((pack) => <FindByVibeResults key={pack.id} pack={pack} />
 
-                    )}
-                </tbody>
-            </table>
+                        )}
+                    </tbody>
+                </Table>
+            </div>
         </div>
+        
         </>
     )
 

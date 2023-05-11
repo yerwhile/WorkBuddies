@@ -35,13 +35,13 @@ export default function ApplicationViews({ isLoggedIn, user }) {
               <Route path="formPack/:id" element={<FormPack />} />
               <Route path="packDetails/:id" element={<PackDetails user={user}/>} />
               <Route path="findPack" element={<FindPack user={user} />} />
-              <Route path="editpack/:id" element={<EditPack />} />
+              <Route path="editPack/:id" element={<EditPack />} />
               <Route path="editVibes/:id" element={<AddVibeForm />} />
               <Route path="editHangouts/:id" element={<AddHangoutForm />} />
           </Route>
           <Route path="vibe">
               <Route path="createVibe/:id" element={<CreateVibe />} />
-              <Route path="findByVibe" element={<FindByVibe />} />
+              <Route path="findByVibe" element={<FindByVibe user={user} />} />
           </Route>
           <Route path="hangout">
             <Route path="createHangout/:id" element={<CreateHangout />} />

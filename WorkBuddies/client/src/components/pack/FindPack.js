@@ -4,6 +4,8 @@ import { getPacksByCity, getPacksByCompany, getPacksByHangout, getPacksByState} 
 import { getHangoutsByState } from "../../modules/hangoutManager";
 import { getBuddiesByState } from "../../modules/buddyManager";
 import FindPackResults from "./FindPackResults";
+import { Table } from "reactstrap";
+import "../styles/FindPack.css"
 
 const FindPack = ({user}) => {
     const [packs, setPacks] = useState([]);
@@ -66,75 +68,84 @@ const FindPack = ({user}) => {
 
     return (
         <>
-        <h2>Find a Pack in Your State: {user?.state}</h2>
-        <div className="findPack_selectFilters">
-            <label htmlFor="cities">Filter by Buddy Cities:</label>
-            <select name="cities"
-                    id="cities" 
-                    value={cityChoice}
-                    onChange={(event) => {
-                        setCityChoice(event.target.value)
-                        setHangoutChoice("")
-                        setCompanyChoice("")
-                    }}>
-                    <option value="">Choose a City</option>
-                {
-                    cities?.map((city, index) => {
-                        return <option key={index + 1} value={city}>{city}</option>
-                    })
-                }
-            </select>
-            <label htmlFor="hangouts">Filter by Pack Hangouts:</label>
-            <select name="hangouts" 
-                    id="hangouts" 
-                    value={hangoutChoice} 
-                    onChange={(event) => {
-                        setHangoutChoice(event.target.value)
-                        setCityChoice("")
-                        setCompanyChoice("")
-                    }}>
-                    <option value="">Choose a Hangout</option>
-                {
-                    hangouts?.map((hangout) => {
-                        return <option key={hangout.id} value={hangout.name}>{hangout.name}</option>
-                    })
-                }
-            </select>
-            <label htmlFor="companies">Filter by Buddy Companies:</label>
-            <select name="companies"
-                    id="companies" 
-                    value={companyChoice}
-                    onChange={(event) => {
-                        setCompanyChoice(event.target.value)
-                        setCityChoice("")
-                        setHangoutChoice("")
-                    }}>
-                    <option value="">Choose a Company</option>
-                {
-                    companies?.map((company, index) => {
-                        return <option key={index + 1} value={company}>{company}</option>
-                    })
-                }
-            </select>
-        </div>
-        <div className="findPack_filterResults">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Formed</th>
-                        <th>Buddy#</th>
-                        <th>Details</th>
-                        <th>Join/Leave?</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {filteredPacks?.map((pack) => <FindPackResults key={pack.id} pack={pack} />
+        <div className="findPack">
+            <h2>Find a Pack in Your State: {user?.state}</h2>
+            <div className="findPack_selectFilters">
+                <div className="findPack_selectFilters__cities">
+                    <label htmlFor="cities">Filter by Buddy Cities:</label>
+                    <select name="cities"
+                            id="cities" 
+                            value={cityChoice}
+                            onChange={(event) => {
+                                setCityChoice(event.target.value)
+                                setHangoutChoice("")
+                                setCompanyChoice("")
+                            }}>
+                            <option value="">Choose a City</option>
+                        {
+                            cities?.map((city, index) => {
+                                return <option key={index + 1} value={city}>{city}</option>
+                            })
+                        }
+                    </select>
+                </div>
+                <div className="findPack_selectFilters__hangouts">
+                    <label htmlFor="hangouts">Filter by Pack Hangouts:</label>
+                    <select name="hangouts" 
+                            id="hangouts" 
+                            value={hangoutChoice} 
+                            onChange={(event) => {
+                                setHangoutChoice(event.target.value)
+                                setCityChoice("")
+                                setCompanyChoice("")
+                            }}>
+                            <option value="">Choose a Hangout</option>
+                        {
+                            hangouts?.map((hangout) => {
+                                return <option key={hangout.id} value={hangout.name}>{hangout.name}</option>
+                            })
+                        }
+                    </select>
+                </div>
+                <div className="findPack_selectFilters__companies">
+                    <label htmlFor="companies">Filter by Buddy Companies:</label>
+                    <select name="companies"
+                            id="companies" 
+                            value={companyChoice}
+                            onChange={(event) => {
+                                setCompanyChoice(event.target.value)
+                                setCityChoice("")
+                                setHangoutChoice("")
+                            }}>
+                            <option value="">Choose a Company</option>
+                        {
+                            companies?.map((company, index) => {
+                                return <option key={index + 1} value={company}>{company}</option>
+                            })
+                        }
+                    </select>
+                </div> 
+            </div>
+            <div className="findPack_filterResults">
+                <Table striped bordered>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Formed</th>
+                            <th>Buddy#</th>
+                            <th>Details</th>
+                            <th>Join/Leave?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {filteredPacks?.map((pack) => <FindPackResults key={pack.id} pack={pack} />
 
-                    )}
-                </tbody>
-            </table>
+                        )}
+                    </tbody>
+                </Table>
+            </div>
         </div>
+        
         </>
     )
 

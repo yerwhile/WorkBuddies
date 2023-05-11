@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink as RRNavLink } from "react-router-dom";
+import { NavLink as RRNavLink, useNavigate } from "react-router-dom";
 import {
   Collapse,
   Navbar,
@@ -10,14 +10,17 @@ import {
   NavLink
 } from 'reactstrap';
 import { logout } from '../modules/authManager';
+import "./styles/Navbar.css"
 
 export default function Header({ isLoggedIn, user }) {
+
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
 
   return (
     <div>
-      <Navbar color="light" light expand="md">
+      <Navbar className="navbar" light expand="md">
         <NavbarBrand tag={RRNavLink} to="/">Work Buddies</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
@@ -45,8 +48,14 @@ export default function Header({ isLoggedIn, user }) {
             {isLoggedIn &&
               <>
                 <NavItem>
-                  <a aria-current="page" className="nav-link"
-                    style={{ cursor: "pointer" }} onClick={logout}>Logout</a>
+                  <a aria-current="page" className="nav-link" href={"/"}
+                    style={{ cursor: "pointer" }} onClick={
+                      () => {
+                        logout()
+                          .then(() => {
+                            navigate("/")
+                          })}
+                      }>Logout</a>
                 </NavItem>
               </>
             }

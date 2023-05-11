@@ -1,0 +1,26 @@
+.findPack {
+    margin-top: 25px;
+    margin-left: 250px;
+    margin-right: 250px;
+}
+
+.findPack_filterResults {
+    margin-top: 40px;
+}
+
+.findPack_selectFilters {
+    display: flex;
+    margin-top: 40px;
+}
+
+.findPack_selectFilters__cities {
+    margin-right: 40px;
+}
+
+.findPack_selectFilters__hangouts {
+    margin-right: 40px;
+}
+
+.btn-info {
+    background-color: #d0e0ee !important;
+}
