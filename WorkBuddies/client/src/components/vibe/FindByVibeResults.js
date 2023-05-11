@@ -56,7 +56,7 @@ const FindByVibeResults = ({pack}) => {
                 <td>{pack.name}</td>
                 <td>{toShortDate(pack.createDate)}</td>
                 <td>{buddyCount}</td>
-                <td><Button color="info" to={`../../pack/packDetails/${pack.id}`}>See Details</Button></td>
+                <td><Button color="info" href={`../../pack/packDetails/${pack.id}`}>See Details</Button></td>
                 <td>
                 {
                     isMember === true

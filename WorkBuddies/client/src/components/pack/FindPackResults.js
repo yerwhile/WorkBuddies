@@ -4,6 +4,7 @@ import { me } from "../../modules/authManager";
 import { Button } from "reactstrap";
 import { addBuddyPack, deleteBuddyPack, getUserBuddyPackByPackId } from "../../modules/buddyManager";
 import { Link, useNavigate } from "react-router-dom";
+import "../styles/FindPack.css"
 
 const FindPackResults = ({pack}) => {
     const navigate = useNavigate();
@@ -56,7 +57,7 @@ const FindPackResults = ({pack}) => {
                 <td>{pack.name}</td>
                 <td>{toShortDate(pack.createDate)}</td>
                 <td>{buddyCount}</td>
-                <td><Button color="info" to={`../../pack/packDetails/${pack.id}`}>See Details</Button></td>
+                <td><Button className="btn-info" href={`../../pack/packDetails/${pack.id}`}>See Details</Button></td>
                 <td>
                 {
                     isMember === true

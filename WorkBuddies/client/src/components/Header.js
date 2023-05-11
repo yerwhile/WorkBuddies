@@ -10,6 +10,7 @@ import {
   NavLink
 } from 'reactstrap';
 import { logout } from '../modules/authManager';
+import "./styles/Navbar.css"
 
 export default function Header({ isLoggedIn, user }) {
 
@@ -19,7 +20,7 @@ export default function Header({ isLoggedIn, user }) {
 
   return (
     <div>
-      <Navbar color="light" light expand="md">
+      <Navbar className="navbar" light expand="md">
         <NavbarBrand tag={RRNavLink} to="/">Work Buddies</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>

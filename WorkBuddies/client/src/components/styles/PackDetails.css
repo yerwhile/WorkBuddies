@@ -1,6 +1,7 @@
 .pack_profile {
     display: flex;
     justify-content: space-around;
+    margin-top: 25px;
 }
 
 .pack_profile__left, .pack_profile__right {
@@ -30,4 +31,25 @@
 
 .pack_vibes {
     margin-top: 20px;
+}
+
+.btn-info {
+    background-color: #d0e0ee !important;
+}
+
+.btn-success {
+    
+    background-color: #b5aa92 !important;
+}
+
+.btn-warning {
+    background-color: #967c94 !important;
+}
+
+.btn-secondary {
+    background-color: #6f909d !important;
+}
+
+.btn-danger {
+    background-color: #9a4a70 !important;
 }
