@@ -62,7 +62,7 @@ export default function PackDetails() {
         <div className="pack_profile">
             <div className="pack_profile__left">
                 <div className="pack_profile__main">
-                    <h2>{pack.name}'s Details</h2>
+                    <h2>{pack.name}'s Pack Details</h2>
                         <div>
                             <img className="pack_profile__image" src={pack.image} />
                         </div>
@@ -87,7 +87,7 @@ export default function PackDetails() {
                             <div className="pack_profile__edit">
                                 {
                                     isMember
-                                        ? <Button color="primary" href={`../editPack/${id}`}>Edit Pack</Button>
+                                        ? <Button color="secondary" href={`../editPack/${id}`}>Edit Pack</Button>
                                         : ""
                                     
                                 }
@@ -144,6 +144,7 @@ export default function PackDetails() {
                                 <th>Name</th>
                                 <th>Location</th>
                                 <th>Company</th>
+                                <th>Details</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -161,7 +162,9 @@ export default function PackDetails() {
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Location</th>
+                                    <th>Street Address</th>
+                                    <th>City</th>
+                                    <th>State</th>
                                 </tr>
                             </thead>
                             <tbody>

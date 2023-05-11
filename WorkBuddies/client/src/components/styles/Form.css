@@ -2,3 +2,17 @@
     margin-left: 250px;
     margin-right: 250px;
 }
+
+.form_checkboxes {
+    margin-top: 20px;
+}
+
+.addVibe_buttons {
+    display: flex;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.addVibe_update {
+    margin-right: 20px;
+}
