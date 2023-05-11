@@ -35,7 +35,7 @@ export default function ApplicationViews({ isLoggedIn, user }) {
               <Route path="formPack/:id" element={<FormPack />} />
               <Route path="packDetails/:id" element={<PackDetails user={user}/>} />
               <Route path="findPack" element={<FindPack user={user} />} />
-              <Route path="editpack/:id" element={<EditPack />} />
+              <Route path="editPack/:id" element={<EditPack />} />
               <Route path="editVibes/:id" element={<AddVibeForm />} />
               <Route path="editHangouts/:id" element={<AddHangoutForm />} />
           </Route>

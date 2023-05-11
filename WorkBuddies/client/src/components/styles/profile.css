@@ -1,0 +1,19 @@
+.buddy_profile {
+    display: flex;
+    justify-content: space-around;
+}
+
+.profileImage {
+    height: 280px;
+}
+
+.buddy_profile__left, .buddy_profile__right {
+    display:flex;
+    flex-direction: column;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.buddy_profile__company {
+    border: 2px;
+}

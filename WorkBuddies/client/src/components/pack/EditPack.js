@@ -9,11 +9,6 @@ export default function EditPack() {
   const navigate = useNavigate();
   const {id} = useParams();
 
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [schedule, setSchedule] = useState("");
-  const [image, setImage] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
   const [currentPack, setCurrentPack] = useState(false);
 
     
@@ -39,7 +34,7 @@ export default function EditPack() {
   const editPackSubmit = (e) => {
     e.preventDefault();
 
-    updatePack(currentPack).then(navigate(`/`))
+    updatePack(currentPack).then(navigate(`../packDetails/${id}`))
   };
   
   return (

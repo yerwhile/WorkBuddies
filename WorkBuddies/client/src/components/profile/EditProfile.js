@@ -24,7 +24,7 @@ export default function EditProfile() {
 
   const editProfileSubmit = (e) => {
     e.preventDefault();
-    updateBuddy(currentUser).then(navigate(`/`))
+    updateBuddy(currentUser).then(navigate(`../profile/${currentUser.id}`))
   };
   
   return (
