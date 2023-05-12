@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { getPacksByState, getPacksByVibe} from "../../modules/packManager";
+import { getAllPacks, getPacksByVibe} from "../../modules/packManager";
 import { getAllVibes } from "../../modules/vibeManager";
 import FindByVibeResults from "./FindByVibeResults";
 import { Table } from "reactstrap";
 
 const FindByVibe = ({user}) => {
-    const [packs, setPacks] = useState([]);
     const [vibes, setVibes] = useState([])
     const [vibeChoice, setVibeChoice] = useState("")
     const [vibePacks, setVibePacks] = useState([]);
     const [filteredPacks, setFilteredPacks] = useState([]);
 
     useEffect(() => {
-        getPacksByState().then(setPacks);
         getAllVibes().then(setVibes);
     }, [])
 
@@ -30,7 +28,7 @@ const FindByVibe = ({user}) => {
     return (
         <>
         <div className="findPack">
-            <h2>Find a Pack by Vibe in Your State: {user?.state}</h2>
+            <h2>Find a Pack by Vibe</h2>
             <div className="findPack_selectFilters">
                 <label htmlFor="vibes">Filter by Vibes:</label>
                 <select name="vibes"
@@ -53,15 +51,18 @@ const FindByVibe = ({user}) => {
                         <tr>
                             <th>Name</th>
                             <th>Formed</th>
-                            <th>Buddy#</th>
+                            <th>Buddy Count</th>
                             <th>Details</th>
                             <th>Join/Leave?</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredPacks?.map((pack) => <FindByVibeResults key={pack.id} pack={pack} />
-
-                        )}
+                        {
+                            vibeChoice !== ""
+                                ? filteredPacks?.map((pack) => <FindByVibeResults key={pack.id} pack={pack} />)
+                                : ""
+                        
+                        }
                     </tbody>
                 </Table>
             </div>

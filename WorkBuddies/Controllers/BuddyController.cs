@@ -45,12 +45,10 @@ namespace WorkBuddies.Controllers
         }
 
         [HttpGet("searchByState")]
-        public IActionResult GetBuddiesByState()
+        public IActionResult GetBuddiesByState(string q)
         {
-            var currentBuddy = GetCurrentBuddy();
 
-
-            return Ok(_buddyRepository.GetBuddiesByState(currentBuddy.State));
+            return Ok(_buddyRepository.GetBuddiesByState(q));
         }
 
         [HttpGet("profile/{id}")]

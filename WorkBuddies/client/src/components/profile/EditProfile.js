@@ -66,10 +66,11 @@ export default function EditProfile() {
             />
           </FormGroup>
           <FormGroup>
-            <Label for="state">State</Label>
+            <Label for="state">State (Abbreviation)</Label>
             <Input
               id="state"
               type="text"
+              maxLength={2}
               placeholder={currentUser.state}
               value={currentUser.state}
               onChange={handleInputChange}

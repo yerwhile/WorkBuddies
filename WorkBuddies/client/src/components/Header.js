@@ -41,21 +41,20 @@ export default function Header({ isLoggedIn, user }) {
                   <NavLink tag={RRNavLink} to="vibe/findByVibe">Find Your Vibe</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={RRNavLink} to={`buddy/profile/${user?.id}`}>My Profile</NavLink>
+                  <NavLink tag={RRNavLink} to={`buddy/profile/${user?.id}`}>{user?.firstName}'s Profile</NavLink>
                 </NavItem>
               </>
             }
             {isLoggedIn &&
               <>
                 <NavItem>
-                  <a aria-current="page" className="nav-link" href={"/"}
+                  <a aria-current="page" className="nav-link"
                     style={{ cursor: "pointer" }} onClick={
                       () => {
-                        logout()
-                          .then(() => {
-                            navigate("/")
-                          })}
-                      }>Logout</a>
+                        logout();
+                        navigate("/");
+                      }}
+                      >(Logout)</a>
                 </NavItem>
               </>
             }
@@ -72,6 +71,7 @@ export default function Header({ isLoggedIn, user }) {
           </Nav>
         </Collapse>
       </Navbar>
+      
     </div>
   );
 }
