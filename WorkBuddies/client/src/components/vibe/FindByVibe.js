@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { getPacksByState, getPacksByVibe} from "../../modules/packManager";
+import { getAllPacks, getPacksByVibe} from "../../modules/packManager";
 import { getAllVibes } from "../../modules/vibeManager";
 import FindByVibeResults from "./FindByVibeResults";
 import { Table } from "reactstrap";
 
 const FindByVibe = ({user}) => {
-    const [packs, setPacks] = useState([]);
     const [vibes, setVibes] = useState([])
     const [vibeChoice, setVibeChoice] = useState("")
     const [vibePacks, setVibePacks] = useState([]);
     const [filteredPacks, setFilteredPacks] = useState([]);
 
     useEffect(() => {
-        getPacksByState().then(setPacks);
         getAllVibes().then(setVibes);
     }, [])
 
@@ -59,9 +57,12 @@ const FindByVibe = ({user}) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredPacks?.map((pack) => <FindByVibeResults key={pack.id} pack={pack} />
-
-                        )}
+                        {
+                            vibeChoice !== ""
+                                ? filteredPacks?.map((pack) => <FindByVibeResults key={pack.id} pack={pack} />)
+                                : ""
+                        
+                        }
                     </tbody>
                 </Table>
             </div>

@@ -4,7 +4,7 @@ import { Button, Form, FormGroup, Input, Label } from "reactstrap";
 import { getAllVibes, getVibeIdsByPack } from "../../modules/vibeManager";
 import { addHangoutToPack, addVibeToPack, getPackDetails } from "../../modules/packManager";
 import { getBuddyProfile } from "../../modules/buddyManager";
-import { getHangoutIdsByPack, getHangoutsByState } from "../../modules/hangoutManager";
+import { getAllHangouts, getHangoutIdsByPack, getHangoutsByState } from "../../modules/hangoutManager";
 import { me } from "../../modules/authManager";
 
 export const AddHangoutForm = () => {
@@ -23,7 +23,7 @@ export const AddHangoutForm = () => {
 
 
   useEffect(() => {
-    getHangoutsByState(currentBuddy.state).then(setHangouts);
+    getAllHangouts().then(setHangouts);
     getHangoutIdsByPack(id).then(setPackHangouts);
     getPackDetails(id).then(setPack);
   }, [currentBuddy]);
