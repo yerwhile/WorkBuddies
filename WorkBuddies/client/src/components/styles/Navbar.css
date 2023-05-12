@@ -1,3 +1,7 @@
 .navbar {
     background-color: #cdc3c4
 }
+
+.welcome {
+    float: inline-end;
+}

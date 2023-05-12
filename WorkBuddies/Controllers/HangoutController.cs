@@ -30,11 +30,10 @@ namespace WorkBuddies.Controllers
         }
 
         [HttpGet("searchByState")]
-        public IActionResult GetHangoutsByState()
+        public IActionResult GetHangoutsByState(string q)
         {
-            var currentBuddy = GetCurrentBuddy();
 
-            return Ok(_hangoutRepository.GetHangoutsByState(currentBuddy.State));
+            return Ok(_hangoutRepository.GetHangoutsByState(q));
         }
 
         private Buddy GetCurrentBuddy()
