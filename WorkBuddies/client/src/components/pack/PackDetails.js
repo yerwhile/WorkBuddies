@@ -62,7 +62,7 @@ export default function PackDetails() {
         <div className="pack_profile">
             <div className="pack_profile__left">
                 <div className="pack_profile__main">
-                    <h2>{pack.name} Pack Details</h2>
+                    <h2>{pack.name}</h2>
                         <div>
                             <img className="pack_profile__image" src={pack.image} />
                         </div>

@@ -62,7 +62,7 @@ export default function Register() {
                   />
                 </FormGroup>
                 <FormGroup>
-                  <Label htmlFor="state">State</Label>
+                  <Label htmlFor="state">State (Abbreviation)</Label>
                   <Input
                     id="state"
                     type="text"

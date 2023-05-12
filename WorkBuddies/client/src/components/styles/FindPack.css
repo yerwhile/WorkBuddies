@@ -21,6 +21,10 @@
     margin-right: 40px;
 }
 
+.findPack_selectState {
+    margin-top: 30px;
+}
+
 .btn-info {
     background-color: #d0e0ee !important;
 }

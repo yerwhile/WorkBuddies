@@ -49,11 +49,9 @@ namespace WorkBuddies.Controllers
         }
 
         [HttpGet("searchByState")]
-        public IActionResult GetPacksByState()
+        public IActionResult GetPacksByState(string q)
         {
-            var currentBuddy = GetCurrentBuddy();
-
-            return Ok(_packRepository.GetPacksByState(currentBuddy.State));
+            return Ok(_packRepository.GetPacksByState(q));
         }
 
         private Buddy GetCurrentBuddy()

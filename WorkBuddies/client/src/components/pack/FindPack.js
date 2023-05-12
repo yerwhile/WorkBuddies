@@ -6,40 +6,62 @@ import { getBuddiesByState } from "../../modules/buddyManager";
 import FindPackResults from "./FindPackResults";
 import { Table } from "reactstrap";
 import "../styles/FindPack.css"
+import { getAllBuddies } from "../../modules/buddyManager";
+import { isDisabled } from "@testing-library/user-event/dist/utils";
 
 const FindPack = ({user}) => {
     const [packs, setPacks] = useState([]);
+    const [states, setStates] = useState([]);
     const [buddies, setBuddies] = useState([])
+    const [stateBuddies, setStateBuddies] = useState([]);
     const [cities, setCities] = useState([]);
     const [hangouts, setHangouts] = useState([]);
     const [companies, setCompanies] = useState([]);
     const [cityPacks, setCityPacks] = useState([]);
     const [hangoutPacks, setHangoutPacks] = useState([]);
     const [companyPacks, setCompanyPacks] = useState([]);
+    const [stateChosen, setStateChosen] = useState(false);
+    const [stateChoice, setStateChoice] = useState("");
     const [cityChoice, setCityChoice] = useState("");
     const [hangoutChoice, setHangoutChoice] = useState("");
     const [companyChoice, setCompanyChoice] = useState("");
-    const [filteredPacks, setFilteredPacks] = useState([]);
+    const [filteredPacks, setFilteredPacks] = useState(null);
 
     useEffect(() => {
-        getPacksByState().then(setPacks);
-        getHangoutsByState().then(setHangouts);
-        getBuddiesByState().then(setBuddies);
+
+        // getHangoutsByState().then(setHangouts);
+
+        getAllBuddies().then(setBuddies);
     }, [])
 
     useEffect(() => {
-        const buddyCities = buddies.map(buddy => buddy.city);
+        const buddyStates = buddies.map(buddy => buddy.state);
+        const uniqueStates = buddyStates.filter((state, index) => {
+            return buddyStates.indexOf(state) === index;
+        })
+        setStates(uniqueStates);
+
+        
+    }, [buddies])
+
+    useEffect(() => {
+        getBuddiesByState(stateChoice).then(setStateBuddies);
+        getHangoutsByState(stateChoice).then(setHangouts);
+    }, [stateChoice])
+
+    useEffect(() => {
+        const buddyCities = stateBuddies.map(buddy => buddy.city);
         const uniqueCities = buddyCities.filter((city, index) => {
             return buddyCities.indexOf(city) === index;
         })
         setCities(uniqueCities);
 
-        const  buddyCompanies = buddies.map(buddy => buddy.companyName);
+        const  buddyCompanies = stateBuddies.map(buddy => buddy.companyName);
         const uniqueCompanies = buddyCompanies.filter((company, index) => {
-            return buddyCompanies.indexOf(company) === index;
+            return buddyCompanies.indexOf(company) === index && company !== null;
         })
         setCompanies(uniqueCompanies);
-    }, [buddies])
+    }, [stateBuddies])
 
     useEffect(() => {
         getPacksByCity(cityChoice).then(setCityPacks)
@@ -52,6 +74,10 @@ const FindPack = ({user}) => {
     useEffect(() => {
         getPacksByCompany(companyChoice).then(setCompanyPacks)
     }, [companyChoice])
+
+    // useEffect(() => {
+    //     setFilteredPacks(packs)
+    // }, [packs])
 
     useEffect(() => {
         setFilteredPacks(companyPacks)
@@ -66,15 +92,37 @@ const FindPack = ({user}) => {
         setFilteredPacks(hangoutPacks)
     }, [hangoutPacks])
 
+
     return (
         <>
         <div className="findPack">
-            <h2>Find a Pack in Your State: {user?.state}</h2>
+            <h2>Find a Pack</h2>
+            <div className="findPack_selectState">
+            <label htmlFor="states">Choose a U.S. State:</label>
+                    <select name="states"
+                            id="states" 
+                            value={stateChoice}
+                            onChange={(event) => {
+                                setStateChoice(event.target.value)
+                                setStateChosen(true)
+                                setHangoutChoice("")
+                                setCompanyChoice("")
+                                setCityChoice("")
+                            }}>
+                            <option value="">Choose a State</option>
+                        {
+                            states?.map((state, index) => {
+                                return <option key={index + 1} value={state}>{state}</option>
+                            })
+                        }
+                    </select>
+            </div>
             <div className="findPack_selectFilters">
                 <div className="findPack_selectFilters__cities">
-                    <label htmlFor="cities">Filter by Buddy Cities:</label>
+                    <label htmlFor="states">Filter by Buddy City:</label>
                     <select name="cities"
-                            id="cities" 
+                            id="cities"
+                            disabled={stateChosen === true && stateChoice !== "" ? false : true}
                             value={cityChoice}
                             onChange={(event) => {
                                 setCityChoice(event.target.value)
@@ -93,6 +141,7 @@ const FindPack = ({user}) => {
                     <label htmlFor="hangouts">Filter by Pack Hangouts:</label>
                     <select name="hangouts" 
                             id="hangouts" 
+                            disabled={stateChosen === true && stateChoice !== "" ? false : true}
                             value={hangoutChoice} 
                             onChange={(event) => {
                                 setHangoutChoice(event.target.value)
@@ -111,6 +160,7 @@ const FindPack = ({user}) => {
                     <label htmlFor="companies">Filter by Buddy Companies:</label>
                     <select name="companies"
                             id="companies" 
+                            disabled={stateChosen === true && stateChoice !== "" ? false : true}
                             value={companyChoice}
                             onChange={(event) => {
                                 setCompanyChoice(event.target.value)
@@ -132,15 +182,18 @@ const FindPack = ({user}) => {
                         <tr>
                             <th>Name</th>
                             <th>Formed</th>
-                            <th>Buddy#</th>
+                            <th>Buddy Count</th>
                             <th>Details</th>
                             <th>Join/Leave?</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredPacks?.map((pack) => <FindPackResults key={pack.id} pack={pack} />
-
-                        )}
+                        {
+                            stateChoice !== ""
+                                ? filteredPacks?.map((pack) => <FindPackResults key={pack.id} pack={pack} />)
+                                : ""
+                        
+                        }
                     </tbody>
                 </Table>
             </div>

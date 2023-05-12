@@ -30,7 +30,7 @@ const FindByVibe = ({user}) => {
     return (
         <>
         <div className="findPack">
-            <h2>Find a Pack by Vibe in Your State: {user?.state}</h2>
+            <h2>Find a Pack by Vibe</h2>
             <div className="findPack_selectFilters">
                 <label htmlFor="vibes">Filter by Vibes:</label>
                 <select name="vibes"
@@ -53,7 +53,7 @@ const FindByVibe = ({user}) => {
                         <tr>
                             <th>Name</th>
                             <th>Formed</th>
-                            <th>Buddy#</th>
+                            <th>Buddy Count</th>
                             <th>Details</th>
                             <th>Join/Leave?</th>
                         </tr>
