@@ -61,6 +61,19 @@ namespace WorkBuddies.Controllers
             return Ok(_hangoutRepository.GetHangoutIdsByPack(packId));
         }
 
+        [HttpGet("hangoutVibe/{id}")]
+        public IActionResult GetHangoutVibeById(int id)
+        {
+
+            var hangoutVibe = _hangoutRepository.GetHangoutVibeById(id);
+            if (hangoutVibe == null)
+            {
+                return NotFound();
+            }
+            return Ok(hangoutVibe);
+
+        }
+
         [HttpPost]
         public IActionResult Post(Hangout hangout)
         {
@@ -78,6 +91,25 @@ namespace WorkBuddies.Controllers
                 return BadRequest();
             }
 
+        }
+
+        [HttpPost("addVibeToHangout/{hangoutId}")]
+        public IActionResult AddVibesToHangout(HangoutVibe hangoutVibe, int hangoutId)
+        {
+            try
+            {
+                _hangoutRepository.DeleteVibesOnHangout(hangoutId);
+                hangoutVibe.HangoutId = hangoutId;
+                _hangoutRepository.AddHangoutVibes(hangoutVibe);
+                return CreatedAtAction(
+                    nameof(GetPackVibeById),
+                    new { packVibe.Id },
+                    packVibe);
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
     }
 }

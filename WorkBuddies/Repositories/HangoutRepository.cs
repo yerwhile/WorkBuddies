@@ -146,6 +146,39 @@ namespace WorkBuddies.Repositories
             }
         }
 
+        public HangoutVibe GetHangoutVibeById(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT hv.Id, hv.HangoutId, hv.VibeId
+                          FROM HangoutVibe hv
+                        WHERE hv.Id = @id";
+
+                    DbUtils.AddParameter(cmd, "@id", id);
+
+                    HangoutVibe hangoutVibe = null;
+
+                    var reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        hangoutVibe = new HangoutVibe()
+                        {
+                            Id = DbUtils.GetInt(reader, "Id"),
+                            HangoutId = DbUtils.GetInt(reader, "HangoutId"),
+                            VibeId = DbUtils.GetInt(reader, "VibeId")
+                        };
+                    }
+                    reader.Close();
+
+                    return hangoutVibe;
+                }
+            }
+        }
+
         public void Add(Hangout hangout)
         {
             using (var conn = Connection)
@@ -163,6 +196,45 @@ namespace WorkBuddies.Repositories
                     DbUtils.AddParameter(cmd, "@state", hangout.State);
 
                     hangout.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
+
+        public void AddHangoutVibes(HangoutVibe hangoutVibe)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                foreach (var vibeId in hangoutVibe.VibeIds)
+                {
+                    using (var cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = @"INSERT INTO HangoutVibe (HangoutId, VibeId)
+                                        OUTPUT INSERTED.ID
+                                        VALUES (@hangoutId, @vibeId)";
+
+                        DbUtils.AddParameter(cmd, "@packId", hangoutVibe.HangoutId);
+                        DbUtils.AddParameter(cmd, "@vibeId", vibeId);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+            }
+        }
+
+        public void DeleteVibesOnHangout(int hangoutId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"DELETE FROM HangoutVibe
+                                        WHERE HangoutVibe.HangoutId = @id";
+
+                    DbUtils.AddParameter(cmd, "@id", hangoutId);
+                    cmd.ExecuteNonQuery();
                 }
             }
         }
