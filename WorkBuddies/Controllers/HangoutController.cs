@@ -42,7 +42,7 @@ namespace WorkBuddies.Controllers
             return _buddyRepository.GetByFirebaseUserId(firebaseUserId);
         }
 
-        [HttpGet("hangoutDetails/{id}")]
+        [HttpGet("details/{id}")]
         public IActionResult GetById(int id)
         {
 
@@ -102,9 +102,9 @@ namespace WorkBuddies.Controllers
                 hangoutVibe.HangoutId = hangoutId;
                 _hangoutRepository.AddHangoutVibes(hangoutVibe);
                 return CreatedAtAction(
-                    nameof(GetPackVibeById),
-                    new { packVibe.Id },
-                    packVibe);
+                    nameof(GetHangoutVibeById),
+                    new { hangoutVibe.Id },
+                    hangoutVibe);
             }
             catch
             {
