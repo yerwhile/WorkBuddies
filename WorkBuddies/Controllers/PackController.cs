@@ -60,6 +60,12 @@ namespace WorkBuddies.Controllers
             return _buddyRepository.GetByFirebaseUserId(firebaseUserId);
         }
 
+        [HttpGet("packsByHangout/{id}")]
+        public IActionResult GetPacksByHangoutId(int id)
+        {
+            return Ok(_packRepository.GetPacksByHangoutId(id));
+        }
+
         [HttpGet("searchByHangout")]
         public IActionResult GetPacksByHangout(string q)
         {

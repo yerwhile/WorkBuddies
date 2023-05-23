@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getBuddyCount, getPackDetails, isBuddyMember } from "../../modules/packManager";
-import PackBuddies from "./PackBuddies";
-import PackHangouts from "./PackHangouts";
 import { Button, Table } from "reactstrap";
-import { addBuddyPack, deleteBuddyPack, getUserBuddyPackByPackId } from "../../modules/buddyManager";
 import { me } from "../../modules/authManager";
 import "../styles/PackDetails.css"
 
@@ -14,38 +10,11 @@ export default function HangoutDetails() {
     let {id} = useParams();
     
     const [hangout, setHangout] = useState({});
-    const [currentUser, setCurrentUser] = useState({});
     
     useEffect(() => {
         getHangoutDetails(id).then(setHangout);
         me().then(setCurrentUser);
     }, [])
-
-    const handleLeaveButton = () => {
-        return <Button color="warning" onClick={() => 
-            getUserBuddyPackByPackId(pack.id)
-                .then((buddyPack) => {
-                    deleteBuddyPack(buddyPack.id)
-                    .then(() => {
-                        navigate(`/../../buddy/profile/${currentUser.id}`)
-                    })
-                }) 
-            } >Leave Pack</Button>
-    }
-
-    const handleJoinButton = () => {
-        return <Button color="success" onClick={() => {
-                const buddyPack = {
-                    buddyId: currentUser.id,
-                    packId: pack.id
-                }
-                addBuddyPack(buddyPack)
-                    .then(() => {
-                        navigate(`/../../buddy/profile/${currentUser.id}`)
-                    })
-        }}
-        >Join Pack</Button>
-    }
 
     return(
         <>

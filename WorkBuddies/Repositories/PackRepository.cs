@@ -156,6 +156,50 @@ namespace WorkBuddies.Repositories
             }
         }
 
+        public List<Pack> GetPacksByHangoutId(int hangoutId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT p.Id, p.[Name], p.[Description], p.Schedule, p.[Image], p.CreateDate, p.IsOpen,
+                                FROM Pack p
+                            LEFT JOIN PackHangout ph ON ph.PackId = p.Id
+                            LEFT JOIN Hangout h ON h.Id = @hangoutId";
+
+                    DbUtils.AddParameter(cmd, "@hangoutId", hangoutId);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        var packs = new List<Pack>();
+                        while (reader.Read())
+                        {
+
+                            var packId = reader.GetInt32(reader.GetOrdinal("Id"));
+                            var existingPack = packs.FirstOrDefault(p => p.Id == packId) ?? new Pack()
+                            {
+                                Id = DbUtils.GetInt(reader, "Id"),
+                                Name = DbUtils.GetString(reader, "Name"),
+                                Description = DbUtils.GetString(reader, "Description"),
+                                Schedule = DbUtils.GetString(reader, "Schedule"),
+                                Image = DbUtils.GetNullableString(reader, "Image"),
+                                CreateDate = DbUtils.GetDateTime(reader, "CreateDate"),
+                                IsOpen = DbUtils.GetBool(reader, "IsOpen")
+                            };
+                            if (packs.FirstOrDefault(p => p.Id == packId) == null)
+                            {
+                                packs.Add(existingPack);
+                            }
+                        }
+                        return packs;
+                    }
+                }
+            }
+        }
+
         public List<Pack> GetPacksByVibe(string vibeName)
         {
             using (var conn = Connection)
