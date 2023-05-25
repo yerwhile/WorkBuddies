@@ -5,7 +5,7 @@ import { getAllVibes, getVibeIdsByPack } from "../../modules/vibeManager";
 import { addVibeToPack, getPackDetails } from "../../modules/packManager";
 import "../styles/Form.css"
 
-export const AddVibeForm = () => {
+export const AddVibeToPackForm = () => {
 
   const [vibes, setVibes] = useState([]);
   const [packVibes, setPackVibes] = useState([]);
@@ -79,9 +79,9 @@ export const AddVibeForm = () => {
           </div>
         </Form>
       </div>
-      <h5 className="addVibe_create">Can't find the vibe you want to add? <Link to={`../../vibe/createVibe/${id}`}>Create a new vibe!</Link></h5>
+      <h5 className="addVibe_create">Can't find the vibe you want to add? <Link to={`../../vibe/createPackVibe/${id}`}>Create a new vibe!</Link></h5>
     </div>
   );
 };
 
-export default AddVibeForm
+export default AddVibeToPackForm

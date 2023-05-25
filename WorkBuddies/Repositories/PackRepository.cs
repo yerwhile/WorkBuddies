@@ -165,10 +165,11 @@ namespace WorkBuddies.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT p.Id, p.[Name], p.[Description], p.Schedule, p.[Image], p.CreateDate, p.IsOpen,
+                        SELECT p.Id, p.[Name], p.[Description], p.Schedule, p.[Image], p.CreateDate, p.IsOpen
                                 FROM Pack p
                             LEFT JOIN PackHangout ph ON ph.PackId = p.Id
-                            LEFT JOIN Hangout h ON h.Id = @hangoutId";
+                            LEFT JOIN Hangout h ON h.Id = ph.HangoutId
+                        WHERE h.Id = @hangoutId";
 
                     DbUtils.AddParameter(cmd, "@hangoutId", hangoutId);
 

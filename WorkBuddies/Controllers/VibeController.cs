@@ -46,6 +46,12 @@ namespace WorkBuddies.Controllers
             return Ok(_vibeRepository.GetVibeIdsByPack(packId));
         }
 
+        [HttpGet("vibesByHangout/{hangoutId}")]
+        public IActionResult GetVibesByHangout(int hangoutId)
+        {
+            return Ok(_vibeRepository.GetVibeIdsByHangout(hangoutId));
+        }
+
         [HttpPost]
         public IActionResult Post(Vibe vibe)
         {

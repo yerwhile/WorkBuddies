@@ -6,13 +6,15 @@ import FormPack from "./pack/FormPack";
 import PackDetails from "./pack/PackDetails";
 import FindPack from "./pack/FindPack";
 import Profile from "./profile/Profile";
-import AddVibeForm from "./pack/AddVibeForm";
-import CreateVibe from "./vibe/CreateVibe";
+import AddVibeToPackForm from "./pack/AddVibeToPackForm";
 import AddHangoutForm from "./pack/AddHangoutForm";
 import CreateHangout from "./hangout/CreateHangout";
 import EditProfile from "./profile/EditProfile";
 import FindByVibe from "./vibe/FindByVibe";
 import EditPack from "./pack/EditPack";
+import HangoutDetails from "./hangout/HangoutDetails";
+import CreateVibeFromPack from "./vibe/CreateVibeFromPack";
+import AddVibeToHangoutForm from "./hangout/AddVibeToHangoutForm";
 
 export default function ApplicationViews({ isLoggedIn, user }) {
 
@@ -36,15 +38,18 @@ export default function ApplicationViews({ isLoggedIn, user }) {
               <Route path="packDetails/:id" element={<PackDetails user={user}/>} />
               <Route path="findPack" element={<FindPack user={user} />} />
               <Route path="editPack/:id" element={<EditPack />} />
-              <Route path="editVibes/:id" element={<AddVibeForm />} />
+              <Route path="editPackVibes/:id" element={<AddVibeToPackForm />} />
               <Route path="editHangouts/:id" element={<AddHangoutForm />} />
           </Route>
           <Route path="vibe">
-              <Route path="createVibe/:id" element={<CreateVibe />} />
+              <Route path="createPackVibe/:id" element={<CreateVibeFromPack />} />
               <Route path="findByVibe" element={<FindByVibe user={user} />} />
           </Route>
           <Route path="hangout">
+            <Route path="createHangoutVibe/:id" element={<CreateVibeFromPack />} />
+            <Route path="hangoutDetails/:id" element={<HangoutDetails />} />
             <Route path="createHangout/:id" element={<CreateHangout />} />
+            <Route path="editHangoutVibes/:id" element={<AddVibeToHangoutForm /> } />
           </Route>
           <Route path="*" element={<p>Whoops, nothing here...</p>} />
         </Route>

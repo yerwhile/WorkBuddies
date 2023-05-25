@@ -100,3 +100,25 @@ export const getHangoutIdsByPack = (hangoutId) => {
         });
     });
 }
+
+export const addVibeToHangout = (hangoutVibe, hangoutId) => {
+  return getToken().then((token) => {
+    return fetch(`${_apiUrl}/addVibeToHangout/${hangoutId}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(hangoutVibe)
+    }).then((resp) => {
+      if (resp.ok) {
+        console.log("HangoutVibe added successfully!")
+        return resp.json();
+      } else {
+        throw new Error(
+          "An error occurred while trying to add a HangoutVibe.",
+        );
+      }
+    });
+  });
+}
