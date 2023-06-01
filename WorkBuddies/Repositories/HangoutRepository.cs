@@ -21,8 +21,14 @@ namespace WorkBuddies.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT h.Id, h.Name, h.StreetAddress, h.City, h.State
+                        SELECT h.Id, h.[Name], h.StreetAddress, h.City, h.[State],
+                            v.Id AS VibeId, v.[Name] AS VibeName,
+                            p.Id AS PackId, p.[Name] AS PackName, p.CreateDate AS PackFormed
                           FROM Hangout h
+                            LEFT JOIN HangoutVibe hv ON hv.HangoutId = h.Id
+                            LEFT JOIN Vibe v ON v.Id = hv.VibeId
+                            LEFT JOIN PackHangout ph ON ph.HangoutId = h.Id
+                            LEFT JOIN Pack p ON p.Id = ph.PackId
                         WHERE h.Id = @id";
 
                     DbUtils.AddParameter(cmd, "@id", id);
@@ -30,16 +36,53 @@ namespace WorkBuddies.Repositories
                     Hangout hangout = null;
 
                     var reader = cmd.ExecuteReader();
-                    if (reader.Read())
+                    while (reader.Read())
                     {
-                        hangout = new Hangout()
+                        if (hangout == null)
                         {
-                            Id = DbUtils.GetInt(reader, "Id"),
-                            Name = DbUtils.GetString(reader, "Name"),
-                            StreetAddress = DbUtils.GetString(reader, "StreetAddress"),
-                            City = DbUtils.GetString(reader, "City"),
-                            State = DbUtils.GetString(reader, "State")
-                        };
+                            hangout = new Hangout()
+                            {
+                                Id = DbUtils.GetInt(reader, "Id"),
+                                Name = DbUtils.GetString(reader, "Name"),
+                                StreetAddress = DbUtils.GetString(reader, "StreetAddress"),
+                                City = DbUtils.GetString(reader, "City"),
+                                State = DbUtils.GetString(reader, "State"),
+                                Packs = new List<Pack>(),
+                                Vibes = new List<Vibe>()
+                            };
+                        }
+
+                        if (DbUtils.IsNotDbNull(reader, "PackId"))
+                        {
+                            var packId = reader.GetInt32(reader.GetOrdinal("PackId"));
+                            var existingPack = hangout.Packs.FirstOrDefault(p => p.Id == packId) ?? new Pack()
+                            {
+                                Id = packId,
+                                Name = DbUtils.GetString(reader, "PackName"),
+                                CreateDate = DbUtils.GetDateTime(reader, "PackFormed")
+                            };
+                            if (hangout.Packs.FirstOrDefault(p => p.Id == packId) == null)
+                            {
+                                hangout.Packs.Add(existingPack);
+                            }
+
+                        }
+
+                        if (DbUtils.IsNotDbNull(reader, "VibeId"))
+                        {
+                            var vibeId = reader.GetInt32(reader.GetOrdinal("VibeId"));
+                            var existingVibe = hangout.Vibes.FirstOrDefault(v => v.Id == vibeId) ?? new Vibe()
+                            {
+                                Id = vibeId,
+                                Name = DbUtils.GetString(reader, "VibeName")
+                            };
+                            if (hangout.Vibes.FirstOrDefault(v => v.Id == vibeId) == null)
+                            {
+                                hangout.Vibes.Add(existingVibe);
+                            }
+
+                        }
+
                     }
                     reader.Close();
 
@@ -213,7 +256,7 @@ namespace WorkBuddies.Repositories
                                         OUTPUT INSERTED.ID
                                         VALUES (@hangoutId, @vibeId)";
 
-                        DbUtils.AddParameter(cmd, "@packId", hangoutVibe.HangoutId);
+                        DbUtils.AddParameter(cmd, "@hangoutId", hangoutVibe.HangoutId);
                         DbUtils.AddParameter(cmd, "@vibeId", vibeId);
 
                         cmd.ExecuteNonQuery();

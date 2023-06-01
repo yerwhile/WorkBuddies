@@ -11,6 +11,7 @@ namespace WorkBuddies.Models
         public string City { get; set; }
         public string State { get; set; }
         public List<Vibe> Vibes { get; set; }
+        public List<Pack> Packs { get; set; }
 
     }
 }
