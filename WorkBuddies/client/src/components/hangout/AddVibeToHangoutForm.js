@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
-import { getAllVibes } from "../../modules/vibeManager";
-import { addVibeToPack } from "../../modules/packManager";
+import { getAllVibes, getVibeIdsByHangout } from "../../modules/vibeManager";
 import "../styles/Form.css"
 import { addVibeToHangout, getHangoutDetails } from "../../modules/hangoutManager";
 
@@ -30,7 +29,7 @@ export const AddVibeToHangoutForm = () => {
         updatedList = [...hangoutVibes, integer]
     } else {
         const integer = parseInt(event.target.value)
-        updatedList.splice(packVibes.indexOf(integer), 1)
+        updatedList.splice(hangoutVibes.indexOf(integer), 1)
     }
     setHangoutVibes(updatedList)
   };

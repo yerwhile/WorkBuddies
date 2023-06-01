@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button, Table } from "reactstrap";
 import { me } from "../../modules/authManager";
 import "../styles/PackDetails.css"
+import { getHangoutDetails } from "../../modules/hangoutManager";
 
 export default function HangoutDetails() {
     const navigate = useNavigate();
@@ -10,6 +11,7 @@ export default function HangoutDetails() {
     let {id} = useParams();
     
     const [hangout, setHangout] = useState({});
+    const [currentUser, setCurrentUser] = useState({});
     
     useEffect(() => {
         getHangoutDetails(id).then(setHangout);
@@ -56,11 +58,7 @@ export default function HangoutDetails() {
                         </div>
                         <div className="hangout_details__vibesButton">
                             {
-                                isMember == true
-                                    ? <>
-                                        <Button color="secondary" href={`../editVibes/${id}`}>Edit Vibes</Button>
-                                        </>
-                                    : ""
+                                        <Button color="secondary" href={`../editHangoutVibes/${id}`}>Edit Vibes</Button>
                             }
                         </div>
                     </div>
