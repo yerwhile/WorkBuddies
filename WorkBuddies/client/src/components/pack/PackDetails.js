@@ -127,7 +127,7 @@ export default function PackDetails() {
                             {
                                 isMember == true
                                     ? <>
-                                        <Button color="secondary" href={`../editVibes/${id}`}>Edit Vibes</Button>
+                                        <Button color="secondary" href={`../editPackVibes/${id}`}>Edit Vibes</Button>
                                         </>
                                     : ""
                             }

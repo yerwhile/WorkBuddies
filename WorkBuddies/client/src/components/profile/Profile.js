@@ -99,6 +99,7 @@ const Profile = ({user}) => {
                         <th>Street Address</th>
                         <th>City</th>
                         <th>State</th>
+                        <th>Details</th>
                     </tr>
                 </thead>
                 <tbody>

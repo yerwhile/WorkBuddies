@@ -62,3 +62,22 @@ export const getVibeIdsByPack = (packId) => {
         });
     });
 }
+
+export const getVibeIdsByHangout = (hangoutId) => {
+    return getToken().then((token) => {
+        return fetch(`${_apiUrl}/vibesByHangout/${hangoutId}`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }).then((resp) => {
+            if(resp.ok) {
+                return resp.json();
+            } else {
+                throw new Error(
+                    "An unknown error occurred while trying to get packs.",
+                );
+            }
+        });
+    });
+}

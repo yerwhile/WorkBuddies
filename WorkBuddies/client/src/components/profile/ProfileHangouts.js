@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { getBuddyCount } from "../../modules/packManager";
+import { Button } from "reactstrap";
 
 const ProfileHangouts = ({hangout}) => {
 
@@ -10,6 +9,7 @@ const ProfileHangouts = ({hangout}) => {
             <td>{hangout.streetAddress}</td>
             <td>{hangout.city}</td>
             <td>{hangout.state}</td>
+            <td><Button color="info" href={`../../hangout/hangoutDetails/${hangout.id}`}>See Details</Button></td>
         </tr>
     ) 
 }
