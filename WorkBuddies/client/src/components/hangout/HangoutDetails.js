@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, Table } from "reactstrap";
 import { me } from "../../modules/authManager";
-import "../styles/PackDetails.css"
+import "../styles/HangoutDetails.css"
 import { getHangoutDetails } from "../../modules/hangoutManager";
+import HangoutPacks from "./HangoutPacks";
 
 export default function HangoutDetails() {
     const navigate = useNavigate();
@@ -41,8 +42,12 @@ export default function HangoutDetails() {
                             </div>
                         </div>
                     </div>
+                    
+            </div>
+                    
+            <div className="hangout_details__right">
                     <div className="hangout_details__vibes">
-                        <h4>Hangout Vibes</h4>
+                        <h4>{hangout.name} Vibes</h4>
                         <div className="hangout_details__vibesList">
                             <Table variant="flush">
                                 <tbody>
@@ -62,11 +67,8 @@ export default function HangoutDetails() {
                             }
                         </div>
                     </div>
-            </div>
-                    
-            <div className="hangout_details__right">
                 <div className="hangout_packs">
-                <h4>Packs associated with {hangout.name}</h4>
+                <h4>Packs Associated with {hangout.name}</h4>
                     <Table striped bordered>
                         <thead>
                             <tr>
@@ -77,9 +79,9 @@ export default function HangoutDetails() {
                             </tr>
                         </thead>
                         <tbody>
-                            {/* {buddy?.packs?.map((pack) => <ProfilePacks key={pack.id} pack={pack} />
+                            {hangout?.packs?.map((pack) => <HangoutPacks key={pack.id} pack={pack} />
                             
-                            )} */}
+                            )}
                         </tbody>
                     </Table>
                 </div>
