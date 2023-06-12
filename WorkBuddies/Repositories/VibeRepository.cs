@@ -103,6 +103,39 @@ namespace WorkBuddies.Repositories
             }
         }
 
+        public List<int> GetVibeIdsByHangout(int hangoutId)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                                SELECT v.Id, v.Name 
+                                    FROM Vibe v
+                                JOIN HangoutVibe hv ON hv.VibeId = v.Id
+                                WHERE hv.HangoutId = @hangoutId";
+
+                    DbUtils.AddParameter(cmd, "@hangoutId", hangoutId);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        var vibeIds = new List<int>();
+                        while (reader.Read())
+                        {
+                            var vibe = new Vibe()
+                            {
+                                Id = DbUtils.GetInt(reader, "Id"),
+                                Name = DbUtils.GetString(reader, "Name")
+                            };
+                            vibeIds.Add(vibe.Id);
+                        }
+                        return vibeIds;
+                    }
+                }
+            }
+        }
+
         public void Add(Vibe vibe)
         {
             using (var conn = Connection)

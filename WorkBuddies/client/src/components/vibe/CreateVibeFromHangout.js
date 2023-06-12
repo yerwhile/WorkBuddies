@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { addVibe } from "../../modules/vibeManager";
 import "../styles/Form.css"
 
-export default function CreateVibe() {
+export default function CreateVibeFromHangout() {
   const navigate = useNavigate();
   const {id} = useParams();
 
@@ -17,7 +17,7 @@ export default function CreateVibe() {
         name
     }
 
-    addVibe(vibe).then(navigate(`/pack/editVibes/${id}`))
+    addVibe(vibe).then(navigate(`/hangout/editHangoutVibes/${id}`))
   };
 
   return (

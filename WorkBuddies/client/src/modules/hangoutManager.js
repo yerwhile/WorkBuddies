@@ -21,6 +21,26 @@ export const getAllHangouts = () => {
     });
 }
 
+export const getHangoutDetails = (id) => {
+  
+    return getToken().then(token => {
+      return fetch(`${_apiUrl}/details/${id}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }).then((resp) => {
+        if (resp.ok) {
+          return resp.json();
+        } else {
+          throw new Error(
+            "An unknown error occurred while trying to get hangout details.",
+          );
+        }
+      });
+    });
+  }
+
 export const addHangout = (hangout) => {
     return getToken().then((token) => {
       return fetch(_apiUrl, {
@@ -79,4 +99,26 @@ export const getHangoutIdsByPack = (hangoutId) => {
             }
         });
     });
+}
+
+export const addVibeToHangout = (hangoutVibe, hangoutId) => {
+  return getToken().then((token) => {
+    return fetch(`${_apiUrl}/addVibeToHangout/${hangoutId}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(hangoutVibe)
+    }).then((resp) => {
+      if (resp.ok) {
+        console.log("HangoutVibe added successfully!")
+        return resp.json();
+      } else {
+        throw new Error(
+          "An error occurred while trying to add a HangoutVibe.",
+        );
+      }
+    });
+  });
 }

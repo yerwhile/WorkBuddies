@@ -9,6 +9,7 @@ namespace WorkBuddies.Repositories
         List<Pack> GetPacks();
         List<Pack> GetPacksByState(string state);
         List<Pack> GetPacksByHangout(string hangout);
+        List<Pack> GetPacksByHangoutId(int hangoutId);
         List<Pack> GetPacksByCity(string city);
         List<Pack> GetPacksByCompany(string company);
         List<Pack> GetPacksByVibe(string vibeName);

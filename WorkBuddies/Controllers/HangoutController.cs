@@ -42,7 +42,7 @@ namespace WorkBuddies.Controllers
             return _buddyRepository.GetByFirebaseUserId(firebaseUserId);
         }
 
-        [HttpGet("hangoutDetails/{id}")]
+        [HttpGet("details/{id}")]
         public IActionResult GetById(int id)
         {
 
@@ -59,6 +59,19 @@ namespace WorkBuddies.Controllers
         public IActionResult GetHangoutsByPack(int packId)
         {
             return Ok(_hangoutRepository.GetHangoutIdsByPack(packId));
+        }
+
+        [HttpGet("hangoutVibe/{id}")]
+        public IActionResult GetHangoutVibeById(int id)
+        {
+
+            var hangoutVibe = _hangoutRepository.GetHangoutVibeById(id);
+            if (hangoutVibe == null)
+            {
+                return NotFound();
+            }
+            return Ok(hangoutVibe);
+
         }
 
         [HttpPost]
@@ -78,6 +91,25 @@ namespace WorkBuddies.Controllers
                 return BadRequest();
             }
 
+        }
+
+        [HttpPost("addVibeToHangout/{hangoutId}")]
+        public IActionResult AddVibesToHangout(HangoutVibe hangoutVibe, int hangoutId)
+        {
+            try
+            {
+                _hangoutRepository.DeleteVibesOnHangout(hangoutId);
+                hangoutVibe.HangoutId = hangoutId;
+                _hangoutRepository.AddHangoutVibes(hangoutVibe);
+                return CreatedAtAction(
+                    nameof(GetHangoutVibeById),
+                    new { hangoutVibe.Id },
+                    hangoutVibe);
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
     }
 }

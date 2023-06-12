@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
-import { getAllVibes, getVibeIdsByPack } from "../../modules/vibeManager";
-import { addVibeToPack, getPackDetails } from "../../modules/packManager";
+import { getAllVibes, getVibeIdsByHangout } from "../../modules/vibeManager";
 import "../styles/Form.css"
+import { addVibeToHangout, getHangoutDetails } from "../../modules/hangoutManager";
 
-export const AddVibeForm = () => {
+export const AddVibeToHangoutForm = () => {
 
   const [vibes, setVibes] = useState([]);
-  const [packVibes, setPackVibes] = useState([]);
-  const [pack, setPack] = useState({});
+  const [hangoutVibes, setHangoutVibes] = useState([]);
+  const [hangout, setHangout] = useState({});
   const { id } = useParams();
 
   const navigate = useNavigate()
@@ -17,40 +17,40 @@ export const AddVibeForm = () => {
 
   useEffect(() => {
     getAllVibes().then(setVibes);
-    getVibeIdsByPack(id).then(setPackVibes);
-    getPackDetails(id).then(setPack);
+    getVibeIdsByHangout(id).then(setHangoutVibes);
+    getHangoutDetails(id).then(setHangout);
   }, []);
 
 
   const handleChange = (event) => {
-    var updatedList = [...packVibes]
+    var updatedList = [...hangoutVibes]
     if (event.target.checked) {
         const integer = parseInt(event.target.value)
-        updatedList = [...packVibes, integer]
+        updatedList = [...hangoutVibes, integer]
     } else {
         const integer = parseInt(event.target.value)
-        updatedList.splice(packVibes.indexOf(integer), 1)
+        updatedList.splice(hangoutVibes.indexOf(integer), 1)
     }
-    setPackVibes(updatedList)
+    setHangoutVibes(updatedList)
   };
 
   const handleSave = (event) => {
     event.preventDefault();
-    const packVibeToSend = {
-        packId: id,
-        vibeIds: packVibes
+    const hangoutVibeToSend = {
+        hangoutId: id,
+        vibeIds: hangoutVibes
     }
-    addVibeToPack(packVibeToSend, parseInt(id))
-        .then(() => navigate(`/pack/packDetails/${id}`))
+    addVibeToHangout(hangoutVibeToSend, parseInt(id))
+        .then(() => navigate(`/hangout/hangoutDetails/${id}`))
   }
   
   return (
     <div className="form">
-      <h2>Add or Remove Existing Vibes from {pack.name}</h2>
+      <h2>Add or Remove Existing Vibes from {hangout.name}</h2>
       <div className="form_checkboxes">
         <Form>
           {vibes.map((vibe) => {
-            const alreadyChecked = packVibes.includes(vibe.id)
+            const alreadyChecked = hangoutVibes.includes(vibe.id)
             return (
               <FormGroup check key={vibe.id}>
                 <Input
@@ -72,7 +72,7 @@ export const AddVibeForm = () => {
               </Button>
             </div>
             <div className="addVibe_cancel">
-              <Button color="danger" href={`/pack/packDetails/${id}`}>
+              <Button color="danger" href={`/hangout/hangoutDetails/${id}`}>
                 Cancel
               </Button>
             </div>
@@ -84,4 +84,4 @@ export const AddVibeForm = () => {
   );
 };
 
-export default AddVibeForm
+export default AddVibeToHangoutForm

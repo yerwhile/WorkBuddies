@@ -3,7 +3,7 @@ import { getBuddyCount, isBuddyMember } from "../../modules/packManager";
 import { me } from "../../modules/authManager";
 import { Button } from "reactstrap";
 import { addBuddyPack, deleteBuddyPack, getUserBuddyPackByPackId } from "../../modules/buddyManager";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const FindByVibeResults = ({pack}) => {
     const navigate = useNavigate();
