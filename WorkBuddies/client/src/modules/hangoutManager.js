@@ -101,6 +101,25 @@ export const getHangoutIdsByPack = (hangoutId) => {
     });
 }
 
+export const updateHangout = (hangoutObj) => {
+  return getToken().then(token => {
+      return fetch(`${_apiUrl}/${hangoutObj.id}`, {
+          method: "PUT",
+          headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            id: hangoutObj.id,
+            name: hangoutObj.name,
+            streetAddress: hangoutObj.streetAddress,
+            city: hangoutObj.city,
+            state: hangoutObj.state
+        })
+      })
+  })
+}
+
 export const addVibeToHangout = (hangoutVibe, hangoutId) => {
   return getToken().then((token) => {
     return fetch(`${_apiUrl}/addVibeToHangout/${hangoutId}`, {
