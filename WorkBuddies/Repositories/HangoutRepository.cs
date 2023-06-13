@@ -266,6 +266,31 @@ namespace WorkBuddies.Repositories
             }
         }
 
+        public void Update(Hangout hangout)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"UPDATE Hangout
+                                        SET Name = @Name,
+                                            StreetAddress = @StreetAddress,
+                                            City = @City,
+                                            State = @State
+                                        WHERE Id = @Id";
+
+                    DbUtils.AddParameter(cmd, "@Name", hangout.Name);
+                    DbUtils.AddParameter(cmd, "@StreetAddress", hangout.StreetAddress);
+                    DbUtils.AddParameter(cmd, "@City", hangout.City);
+                    DbUtils.AddParameter(cmd, "@State", hangout.State);
+                    DbUtils.AddParameter(cmd, "@Id", hangout.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
         public void DeleteVibesOnHangout(int hangoutId)
         {
             using (var conn = Connection)

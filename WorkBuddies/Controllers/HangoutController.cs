@@ -111,5 +111,18 @@ namespace WorkBuddies.Controllers
                 return BadRequest();
             }
         }
+
+        [HttpPut("{id}")]
+        public IActionResult Edit(int id, Hangout hangout)
+        {
+            if (id != hangout.Id)
+            {
+                return BadRequest();
+            }
+
+            _hangoutRepository.Update(hangout);
+            return NoContent();
+
+        }
     }
 }
