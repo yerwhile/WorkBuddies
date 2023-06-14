@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import { useNavigate, Link, useParams } from "react-router-dom";
-import { updateBuddy } from "../../modules/buddyManager";
-import { me } from "../../modules/authManager";
-import { editPack, getPackDetails, updatePack } from "../../modules/packManager";
+import { useNavigate, useParams } from "react-router-dom";
+import { getPackDetails, updatePack } from "../../modules/packManager";
 import "../styles/Form.css"
 
 export default function EditPack() {
