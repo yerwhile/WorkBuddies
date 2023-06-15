@@ -15,6 +15,7 @@ import EditPack from "./pack/EditPack";
 import HangoutDetails from "./hangout/HangoutDetails";
 import CreateVibeFromPack from "./vibe/CreateVibeFromPack";
 import AddVibeToHangoutForm from "./hangout/AddVibeToHangoutForm";
+import EditHangout from "./hangout/EditHangout";
 
 export default function ApplicationViews({ isLoggedIn, user }) {
 
@@ -49,6 +50,7 @@ export default function ApplicationViews({ isLoggedIn, user }) {
             <Route path="createHangoutVibe/:id" element={<CreateVibeFromPack />} />
             <Route path="hangoutDetails/:id" element={<HangoutDetails />} />
             <Route path="createHangout/:id" element={<CreateHangout />} />
+            <Route path="editHangout/:id" element={<EditHangout />} />
             <Route path="editHangoutVibes/:id" element={<AddVibeToHangoutForm /> } />
           </Route>
           <Route path="*" element={<p>Whoops, nothing here...</p>} />
