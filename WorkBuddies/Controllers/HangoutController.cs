@@ -55,6 +55,13 @@ namespace WorkBuddies.Controllers
 
         }
 
+        [HttpGet("searchByVibe")]
+        public IActionResult GetHangoutsByVibe(string q)
+        {
+
+            return Ok(_hangoutRepository.GetHangoutsByVibe(q));
+        }
+
         [HttpGet("hangoutsByPack/{packId}")]
         public IActionResult GetHangoutsByPack(int packId)
         {

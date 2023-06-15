@@ -12,6 +12,7 @@ namespace WorkBuddies.Repositories
         Hangout GetById(int id);
         HangoutVibe GetHangoutVibeById(int id);
         List<Hangout> GetHangouts();
+        List<Hangout> GetHangoutsByVibe(string vibeName);
         List<Hangout> GetHangoutsByState(string state);
         List<int> GetHangoutIdsByPack(int packId);
     }
