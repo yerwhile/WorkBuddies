@@ -63,6 +63,25 @@ export const addHangout = (hangout) => {
     });
   }
 
+  export const getHangoutsByVibe = (vibeName) => {
+    return getToken().then((token) => {
+        return fetch(`${_apiUrl}/searchByVibe?q=${vibeName}`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }).then((resp) => {
+            if(resp.ok) {
+                return resp.json();
+            } else {
+                throw new Error(
+                    "An unknown error occurred while trying to get Hangouts by Vibe.",
+                );
+            }
+        });
+    });
+}
+
 export const getHangoutsByState = (state) => {
     return getToken().then((token) => {
         return fetch(`${_apiUrl}/searchByState?q=${state}`, {

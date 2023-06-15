@@ -123,6 +123,49 @@ namespace WorkBuddies.Repositories
             }
         }
 
+        public List<Hangout> GetHangoutsByVibe(string vibeName)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT h.Id, h.[Name], h.StreetAddress, h.City, h.[State]
+                                FROM Hangout h
+                            LEFT JOIN HangoutVibe hv ON hv.HangoutId = h.Id
+                            LEFT JOIN Vibe v ON v.Id = hv.VibeId
+                        WHERE v.[Name] LIKE @vibeName";
+
+                    DbUtils.AddParameter(cmd, "@vibeName", $"%{vibeName}%");
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        var hangouts = new List<Hangout>();
+                        while (reader.Read())
+                        {
+
+                            var hangoutId = reader.GetInt32(reader.GetOrdinal("Id"));
+                            var existingHangout = hangouts.FirstOrDefault(h => h.Id == hangoutId) ?? new Hangout()
+                            {
+                                Id = DbUtils.GetInt(reader, "Id"),
+                                Name = DbUtils.GetString(reader, "Name"),
+                                StreetAddress = DbUtils.GetString(reader, "StreetAddress"),
+                                City = DbUtils.GetString(reader, "City"),
+                                State = DbUtils.GetNullableString(reader, "State")
+                            };
+                            if (hangouts.FirstOrDefault(h => h.Id == hangoutId) == null)
+                            {
+                                hangouts.Add(existingHangout);
+                            }
+                        }
+                        return hangouts;
+                    }
+                }
+            }
+        }
+
         public List<Hangout> GetHangoutsByState(string state)
         {
             using (SqlConnection conn = Connection)

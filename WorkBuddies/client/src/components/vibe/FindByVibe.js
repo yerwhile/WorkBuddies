@@ -1,34 +1,39 @@
 import React, { useEffect, useState } from "react";
-import { getAllPacks, getPacksByVibe} from "../../modules/packManager";
+import { getPacksByVibe} from "../../modules/packManager";
 import { getAllVibes } from "../../modules/vibeManager";
 import FindByVibeResults from "./FindByVibeResults";
 import { Table } from "reactstrap";
+import { getHangoutsByVibe } from "../../modules/hangoutManager";
 
 const FindByVibe = ({user}) => {
     const [vibes, setVibes] = useState([])
     const [vibeChoice, setVibeChoice] = useState("")
     const [vibePacks, setVibePacks] = useState([]);
-    const [filteredPacks, setFilteredPacks] = useState([]);
+    const [vibeHangouts, setVibeHangouts] = useState([]);
+    const [searchResults, setSearchResults] = useState([]);
 
     useEffect(() => {
         getAllVibes().then(setVibes);
     }, [])
 
     useEffect(() => {
-        getPacksByVibe(vibeChoice).then(setVibePacks)
+        getPacksByVibe(vibeChoice).then(setVibePacks);
+        getHangoutsByVibe(vibeChoice).then(setVibeHangouts);
     }, [vibeChoice])
 
 
     useEffect(() => {
-        setFilteredPacks(vibePacks)
-    }, [vibePacks])
+        const vibeResults = vibePacks.concat(vibeHangouts);
+        vibeResults.sort((a, b) => a.name - b.name)
+        setSearchResults(vibeResults);
+    }, [vibePacks, vibeHangouts])
 
     
 
     return (
         <>
         <div className="findPack">
-            <h2>Find a Pack by Vibe</h2>
+            <h2>Find Packs and Hangouts by Vibe</h2>
             <div className="findPack_selectFilters">
                 <label htmlFor="vibes">Filter by Vibes:</label>
                 <select name="vibes"
@@ -49,17 +54,15 @@ const FindByVibe = ({user}) => {
                 <Table striped bordered>
                     <thead>
                         <tr>
+                            <th>Pack or Hangout?</th>
                             <th>Name</th>
-                            <th>Formed</th>
-                            <th>Buddy Count</th>
                             <th>Details</th>
-                            <th>Join/Leave?</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
                             vibeChoice !== ""
-                                ? filteredPacks?.map((pack) => <FindByVibeResults key={pack.id} pack={pack} />)
+                                ? searchResults?.map((sr) => <FindByVibeResults key={`${searchResults.indexOf(sr)}`} searchResult={sr} />)
                                 : ""
                         
                         }
