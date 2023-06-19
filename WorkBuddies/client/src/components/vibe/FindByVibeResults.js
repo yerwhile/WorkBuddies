@@ -1,18 +1,8 @@
-import { useEffect, useState } from "react"
 import { Button } from "reactstrap";
-import { useNavigate } from "react-router-dom";
 
 const FindByVibeResults = ({searchResult}) => {
-    const navigate = useNavigate();
 
-
-    useEffect(() => {
-
-    }, [])
-
-    
-
-    return (<tr>
+    return <tr>
                 <td>
                     {
                         searchResult.streetAddress != null
@@ -28,8 +18,7 @@ const FindByVibeResults = ({searchResult}) => {
                     
                     }
                 </td>
-            </tr>
-            )
+            </tr>           
 }
 
 export default FindByVibeResults
