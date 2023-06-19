@@ -24,7 +24,7 @@ const FindByVibe = ({user}) => {
 
     useEffect(() => {
         const vibeResults = vibePacks.concat(vibeHangouts);
-        vibeResults.sort((a, b) => a.name - b.name)
+        vibeResults.sort((a, b) => a.name.localeCompare(b.name));
         setSearchResults(vibeResults);
     }, [vibePacks, vibeHangouts])
 
@@ -60,12 +60,11 @@ const FindByVibe = ({user}) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {
-                            vibeChoice !== ""
-                                ? searchResults?.map((sr) => <FindByVibeResults key={`${searchResults.indexOf(sr)}`} searchResult={sr} />)
-                                : ""
-                        
-                        }
+                            {
+                                vibeChoice !== ""
+                                    ? searchResults?.map((sr) => <FindByVibeResults key={`${searchResults.indexOf(sr)}`} searchResult={sr} />)
+                                    : ""
+                            }
                     </tbody>
                 </Table>
             </div>
