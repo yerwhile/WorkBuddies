@@ -63,13 +63,12 @@ const FindByVibe = ({user}) => {
                             {
                                 vibeChoice !== ""
                                     ? searchResults?.map((sr) => <FindByVibeResults key={`${searchResults.indexOf(sr)}`} searchResult={sr} />)
-                                    : ""
+                                    : <tr></tr>
                             }
                     </tbody>
                 </Table>
             </div>
         </div>
-        
         </>
     )
 

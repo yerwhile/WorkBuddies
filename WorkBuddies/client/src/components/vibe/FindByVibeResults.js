@@ -11,11 +11,11 @@ const FindByVibeResults = ({searchResult}) => {
                     }
                 </td>
                 <td>{searchResult.name}</td>
-                <td>{
+                <td>
+                    {
                         searchResult.streetAddress != null
                             ? <Button color="info" href={`../../hangout/hangoutDetails/${searchResult.id}`}>See Details</Button>
                             : <Button color="info" href={`../../pack/packDetails/${searchResult.id}`}>See Details</Button>
-                    
                     }
                 </td>
             </tr>           
